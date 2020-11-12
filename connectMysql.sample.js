@@ -1,11 +1,12 @@
 var mysql = require("mysql");
+var config = require("config.js");
 
 var connection = mysql.createConnection({
-  connectionLimit: 10,
-  host: "",
-  user: "",
-  password: "",
-  database: "",
+  connectionLimit: config.connectionLimit,
+  host: config.connectionHost,
+  user: config.connectionUser,
+  password: config.connectionPassword,
+  database: config.connectionDatabase,
 });
 
 connection.connect(function (err) {
