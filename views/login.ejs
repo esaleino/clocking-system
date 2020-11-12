@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%-include('header')-%> <%-include('navbar')-%>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row clearfix" style="height: 200px"></div>
+      <div class="row">
+        <div class="col" name="Left column"></div>
+        <div class="col" name="Center column" style="max-width: 25%">
+          <div class="card">
+            <div class="card-body">
+              <a href="/register" class="float-right btn btn-outline-dark"
+                >Register</a
+              >
+              <h4 class="card-title">Sign in</h4>
+              <form method="POST" action="authpost">
+                <div class="form-group mt-4 mb-4">
+                  <label>You account name</label>
+                  <input
+                    class="form-control mb-4"
+                    placeholder="username"
+                    type="username"
+                    name="username"
+                    required
+                  />
+                  <label>Your password</label>
+                  <input
+                    class="form-control"
+                    placeholder="password"
+                    type="password"
+                    name="password"
+                    required
+                  />
+                  <button type="submit" class="btn btn-dark btn-block mt-4">
+                    Login
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col" name="Right column"></div>
+      </div>
+      <div class="row"></div>
+    </div>
+    <!-- <div class="container">
+        <div class="row">
+            <aside class="col-sm-6">
+                <div class="card">
+                    <article class="card-body">
+                        <h1>Login Form</h1>
+                        <form action="authPost" method="POST">
+                            <div class="form-group">
+                                <input type="text" name="username" placeholder="Username" required value=test>
+                                <input type="password" name="password" placeholder="Password" required value=test>
+                                <input type="submit">
+                            </div>
+                        </form>
+                    </article>
+                </div>
+            </aside>
+        </div>
+    </div> -->
+  </body>
+</html>

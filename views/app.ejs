@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <%-include('header')-%>
+    <%-include('navbar')-%>
+    <script>var tableData = '<%-JSON.stringify(tableData)%>';</script>
+</head>
+
+<body onload="pageLoadApp()">
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-4">
+                <h1><%= title %></h1>
+                <p>This is the app page</p>
+                <form action="../userpost" method="POST">
+                    <div class="form-group">
+                        <p class="h4">ID only for editing</p>
+                        <input class="form-control" id="identifier" name="id" type="number" readonly>
+                        <p class="h4">Your username</p>
+                        <input class="form-control" id="user" name="username" type="text" readonly value='<%= loggedinUser %>'>
+                        <p class="h4">Input task name</p>
+                        <input class="form-control" id="task" name="project" required>
+                        <p class="h4">Input time spent in hours</p>
+                        <input class="form-control" id="time" name="hours" type="number" required>
+                        <p class="h4">Input notes</p>
+                        <input class="form-control" id="notes" name="info" required value="none"></br>
+                        <input class="btn btn-dark w-100" type="submit">
+                        <!-- <button onclick="submitData()" disabled>hello</button>
+                    <button onclick=" testClick()">Test</button> -->
+                    </div>
+                </form>
+
+            </div>
+            <!-- <div class="col-sm w-20"></div> -->
+            <div class="col-8">
+                <br>
+                <table class="table table-striped table-bordered w-100" id="table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>PROJECT</th>
+                            <th>HOURS</th>
+                            <th>INFO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <a href="../login">login page</a>
+</body>
+
+</html>

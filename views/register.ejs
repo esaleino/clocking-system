@@ -1,0 +1,36 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+    <script src="../javascripts/register.js"></script>
+    <script>
+        window.history.pushState("", "", '/register');
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>This is the register section.</h1>
+        <h1 style="color: red"><%= errormessage1 %></h1>
+        <h1 style="color: red"><%= errormessage2 %></h1>
+        <div class="column w-30"></div>
+        <form onsubmit="return formCheck()" action="registerPost" method="POST">
+            <div class="form-group w-50"><br>
+                <p>Input username</p>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <p>Input password</p>
+                <input type="password" class="form-control" id="password" name="password" required>
+                <p>Input password again</p>
+                <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" required>
+                <p>Input email</p>
+                <input type="email" class="form-control" id="email" name="email" required><br>
+                <input class="btn btn-dark" type="submit">
+            </div>
+        </form>
+        <button onclick="formCheck()"></button>
+
+    </div>
+</body>
+
+</html>
