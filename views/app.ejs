@@ -10,7 +10,7 @@
 
 <body onload="pageLoadApp()">
     <div class="container-fluid">
-        <div class="row ">
+        <div class="row" style="min-width: 100%">
             <div class="col-4">
                 <h1><%= title %></h1>
                 <p>This is the app page</p>
@@ -34,15 +34,15 @@
 
             </div>
             <!-- <div class="col-sm w-20"></div> -->
-            <div class="col-8">
+            <div class="col" style="max-width: 100%">
                 <br>
-                <table class="table table-striped table-bordered w-100" id="table" style="width:100%;">
+                <table class="table table-striped table-bordered" id="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>PROJECT</th>
-                            <th>HOURS</th>
-                            <th>INFO</th>
+                            <th class="th-sm">ID</th>
+                            <th class="th-sm">PROJECT</th>
+                            <th class="th-sm">HOURS</th>
+                            <th class="th-sm">INFO</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">

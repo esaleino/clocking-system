@@ -16,10 +16,8 @@
     "express-log-errors": "^2.1.1",
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
-    "jquery": "^3.5.1",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
-    "node-telegram-bot-api": "^0.50.0",
-    "popper.js": "^1.16.1"
+    "node-telegram-bot-api": "^0.50.0"
   }
 }

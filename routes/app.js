@@ -28,6 +28,14 @@ router.use(
     }
   }
 );
+router.get("/", function (req, res) {
+  if (req.session.loggedin == true) {
+    res.redirect("/app/" + req.session.username);
+  } else {
+    console.log("Not logged in, moving to login page.");
+    res.render("login", { status: "Not logged in, please login first", title: "Login page", loggedinUser: "Not logged in" });
+  }
+});
 //router.get("/:id", function (req, res, next) {});
 
 module.exports = router;

@@ -1,5 +1,5 @@
 window.addRowHandlers = () => {
-  var placeholder;
+  var lastRow;
   var getClass;
   var i;
   var table = document.getElementById("table");
@@ -8,9 +8,9 @@ window.addRowHandlers = () => {
     var currentRow = table.rows[i];
     var createClickHandler = function (row) {
       return function () {
-        if (placeholder != row) {
-          if (row != placeholder && getClass != undefined) {
-            placeholder.className = getClass;
+        if (lastRow != row) {
+          if (row != lastRow && getClass != undefined) {
+            lastRow.className = getClass;
             //alert("hello");
           }
           var cell1 = row.getElementsByTagName("th")[0];
@@ -25,7 +25,7 @@ window.addRowHandlers = () => {
           var notes = cell4.innerHTML;
           fillForm(id, task, time, notes);
         }
-        placeholder = row;
+        lastRow = row;
       };
     };
     currentRow.onclick = createClickHandler(currentRow);
