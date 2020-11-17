@@ -4,19 +4,15 @@
 <head>
     <title><%= title %></title>
     <%- include('header')-%>
+    <%- include('navbar')-%>
+    <script type="module" src="/javascripts/admin.js"></script>
     <script>
-        var myUsername = '<%-JSON.stringify(username)%>';
+        var myUsername = '<%-JSON.stringify(loggedinUser)%>';
         var tableData = '<%-JSON.stringify(tableData)%>';
-    </script>
-    <script>
-        // let template = ejs.compile(str, options);
-        // template(data);
-        // ejs.render(str, data, options);
-
     </script>
 </head>
 
-<body onload="onPageLoad()">
+<body onload="pageLoadAdmin()">
     <div class="container-fluid">
         <div class="row ">
             <div class="col-4">
@@ -27,7 +23,7 @@
                         <p class="h4">ID only for editing</p>
                         <input class="form-control" id="identifier" name="id" type="number" readonly>
                         <p class="h4">Your username</p>
-                        <input class="form-control" id="user" name="username" type="text" value='<%= username %>'>
+                        <input class="form-control" id="user" name="username" type="text" value='<%= loggedinUser %>'>
                         <p class="h4">Input task name</p>
                         <input class="form-control" id="task" name="project" required>
                         <p class="h4">Input time spent in hours</p>
@@ -46,11 +42,12 @@
                 <table class="table table-striped table-bordered w-100" id="table" style="width:100%;">
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>USERNAME</th>
-                            <th>PROJECT</th>
-                            <th>HOURS</th>
-                            <th>INFO</th>
+                            <th>FIRST NAME</th>
+                            <th>LAST NAME</th>
+                            <th>GROUP NAME</th>
+                            <th>CLOCKED IN</th>
+                            <th>ON LUNCH</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">

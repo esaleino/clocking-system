@@ -7,7 +7,6 @@ var checkStatus = new CheckStatus();
 router.use(
   '/:id',
   function (req, res, next) {
-    console.log(req.session.username + 'this is first');
     res.locals.id = req.params.id;
     //console.log("User not logged in, => loginerror");
     next();
@@ -41,7 +40,6 @@ router.get('/', function (req, res) {
   if (req.session.loggedin == true) {
     res.redirect('/app/' + req.session.username);
   } else {
-    console.log('Not logged in, moving to login page.');
     res.render('login', { status: 'Not logged in, please login first', title: 'Login page', loggedinUser: 'Not logged in' });
   }
 });

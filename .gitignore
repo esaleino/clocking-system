@@ -110,3 +110,4 @@ telegrambot.js
 connectMysql.js
 sessionstore.js
 test.js
+config.js
