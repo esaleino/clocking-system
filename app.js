@@ -9,6 +9,10 @@ var app = express();
 const logErrors = require('express-log-errors');
 //require("./telegrambot/telegrambot");
 var sessionStore = require('./sessionstore');
+var config = require('./config');
+const Preset = require('./tools/databasePresetBuilder');
+var databasePreset = new Preset();
+
 // DEFINE ROUTERS
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -74,6 +78,11 @@ app.use('', registerPost);
 app.use('', authPost);
 app.use('', userPost);
 app.use('', clockingPost);
+
+if (config.runBuilder) {
+  databasePreset.presetBuilder();
+  databasePreset.fillTemplate();
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

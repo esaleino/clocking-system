@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 const Clocking = require('../serverjs/clocking.js');
 var clocking = new Clocking();
-const CheckStatus = require('../serverjs/checkStatus.js');
+const CheckStatus = require('../serverjs/checkstatus.js');
 var checkStatus = new CheckStatus();
 var connection = require('../connectMysql');
 
