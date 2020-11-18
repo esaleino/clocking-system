@@ -12,7 +12,6 @@ router.use(
     next();
   },
   async function (req, res, next) {
-    console.log('this is last');
     if (req.session.loggedin == true && req.session.username == res.locals.id) {
       let check = await checkStatus.checkStatus(req.session.username);
       console.log(check);

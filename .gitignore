@@ -111,3 +111,4 @@ connectMysql.js
 sessionstore.js
 test.js
 config.js
+tools/

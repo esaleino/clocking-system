@@ -1,5 +1,5 @@
-var mysql = require("mysql");
-var config = require("config.js");
+var mysql = require('mysql');
+var config = require('config.js');
 
 var connection = mysql.createConnection({
   connectionLimit: config.connectionLimit,
@@ -7,15 +7,16 @@ var connection = mysql.createConnection({
   user: config.connectionUser,
   password: config.connectionPassword,
   database: config.connectionDatabase,
+  multipleStatements: true,
 });
 
 connection.connect(function (err) {
   if (err) {
-    console.error("error connecting: " + err.stack);
+    console.error('error connecting: ' + err.stack);
     return;
   }
 
-  console.log("connected as id " + connection.threadId);
+  console.log('connected as id ' + connection.threadId);
 });
 
 module.exports = connection;
