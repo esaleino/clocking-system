@@ -38,9 +38,18 @@ var createSessions = `CREATE TABLE IF NOT EXISTS sessions (
                     PRIMARY KEY (session_id)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`;
 var insertGroups = {
-  Group1: `INSERT IGNORE INTO workgroups SET (groupName, groupAuthKey, groupProject) VALUES ('testGroup1', 'VT5dTmifyE', 'testProject1');`,
-  Group2: `INSERT IGNORE INTO workgroups SET (groupName, groupAuthKey, groupProject) VALUES ('testGroup2', 'bjNffOEArO', 'testProject2');`,
-  Group3: `INSERT IGNORE INTO workgroups SET (groupName, groupAuthKey, groupProject) VALUES ('testGroup3', 'fgzRHVuemP', 'testProject3');`,
+  Group1: `INSERT IGNORE INTO workgroups 
+          (groupName, groupAuthKey, groupProject) 
+          VALUES ('testGroup1', 'VT5dTmifyE', 
+          'testProject1');`,
+  Group2: `INSERT IGNORE INTO workgroups 
+          (groupName, groupAuthKey, groupProject) 
+          VALUES ('testGroup2', 'bjNffOEArO', 
+          'testProject2');`,
+  Group3: `INSERT IGNORE INTO workgroups 
+          (groupName, groupAuthKey, groupProject) 
+          VALUES ('testGroup3', 'fgzRHVuemP', 
+          'testProject3');`,
 };
 
 class Preset {

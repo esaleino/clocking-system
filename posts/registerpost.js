@@ -38,7 +38,7 @@ app.post('/registerpost', function (req, res) {
         bcrypt.genSalt(saltRounds, (err, salt) => {
           bcrypt.hash(req.body.password, salt, (err, hash) => {
             console.log(hash);
-            newUser.insert(hash, req.body.username, req.body.email);
+            newUser.insert(hash, req.body);
           });
           res.redirect('../login');
         });

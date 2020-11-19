@@ -1,36 +1,54 @@
 <html>
-
-<head>
-    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css">
+  <head>
+    <%-include('header')-%> <%-include('navbar')-%>
+    <link rel="stylesheet" href="../stylesheets/bootstrap.min.css" />
     <script src="../javascripts/register.js"></script>
     <script>
-        window.history.pushState("", "", '/register');
+      window.history.pushState('', '', '/register');
     </script>
-</head>
+  </head>
 
-<body>
-
-    <div class="container">
-        <h1>This is the register section.</h1>
-        <h1 style="color: red"><%= errormessage1 %></h1>
-        <h1 style="color: red"><%= errormessage2 %></h1>
-        <div class="column w-30"></div>
-        <form onsubmit="return formCheck()" action="registerPost" method="POST">
-            <div class="form-group w-50"><br>
-                <p>Input username</p>
-                <input type="text" class="form-control" id="username" name="username" required>
-                <p>Input password</p>
-                <input type="password" class="form-control" id="password" name="password" required>
-                <p>Input password again</p>
-                <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" required>
-                <p>Input email</p>
-                <input type="email" class="form-control" id="email" name="email" required><br>
-                <input class="btn btn-dark" type="submit">
+  <body>
+    <div class="container-fluid">
+      <div class="row" style="min-height: 10%"></div>
+      <h1 style="color: red"><%= errormessage1 %></h1>
+      <h1 style="color: red"><%= errormessage2 %></h1>
+      <div class="row h-25">
+        <div class="col-lg-4 col-md-4 col-sm-2"></div>
+        <div class="col-lg-4 col-md-4 col-sm-8">
+          <div class="card">
+            <h4 class="card-header text-center">Register form</h4>
+            <div class="card-body">
+              <form onsubmit="return formCheck()" action="registerPost" method="POST">
+                <div class="form-group">
+                  <div class="form-row text-center">
+                    <div class="col-6 form-group">
+                      <label>First name</label>
+                      <input type="text" name="firstname" required class="form-control" placeholder="First name" />
+                    </div>
+                    <div class="col-6 form-group">
+                      <label>Last name</label>
+                      <input type="text" name="lastname" required class="form-control" placeholder="Last name" />
+                    </div>
+                  </div>
+                  <label>Email</label>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="email@email.com" required />
+                  <label>Username</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="username" required />
+                  <label>Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="*****" required />
+                  <label>Confirm password</label>
+                  <input type="password" class="form-control" id="passwordCheck" name="passwordCheck" placeholder="*****" required />
+                  <label>Authentication key for group</label>
+                  <input type="text" class="form-control" name="authkey" required placeholder="123abc!#¤" />
+                  <input class="btn btn-dark mt-4 w-100" type="submit" />
+                </div>
+              </form>
             </div>
-        </form>
-        <button onclick="formCheck()"></button>
-
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-2"></div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

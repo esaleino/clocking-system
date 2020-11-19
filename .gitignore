@@ -112,3 +112,5 @@ sessionstore.js
 test.js
 config.js
 tools/getIt.js
+posts/testpost.js
+serverjs/testApp.js
