@@ -23,7 +23,7 @@ var appRouter = require('./routes/app');
 var logoutRouter = require('./routes/logout');
 
 // DEFINE TESTS
-var testPost = require('./posts/testpost');
+// var testPost = require('./posts/testpost');
 
 // DEFINE POSTS
 var registerPost = require('./posts/registerpost');
@@ -81,7 +81,7 @@ app.use('', registerPost);
 app.use('', authPost);
 app.use('', userPost);
 app.use('', clockingPost);
-app.use('', testPost);
+// app.use('', testPost);
 
 if (config.runBuilder) {
   databasePreset.presetBuilder();

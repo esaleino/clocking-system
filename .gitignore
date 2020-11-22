@@ -105,12 +105,6 @@ dist
 
 .vscode/
 *.code-workspace
-bfg-1.13.0.jar
-telegrambot.js
-connectMysql.js
-sessionstore.js
 test.js
 config.js
-tools/getIt.js
-posts/testpost.js
-serverjs/testApp.js
+.prettierignore
