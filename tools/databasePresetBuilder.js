@@ -15,6 +15,7 @@ var createPersons = `CREATE TABLE IF NOT EXISTS persons
                     groupName varchar(255) DEFAULT 'not set',
                     clockedin tinyint(1) NOT NULL DEFAULT 0,
                     onlunch tinyint(1) NOT NULL DEFAULT 0,
+                    clockInTime,
                     UNIQUE KEY unique_username (username)
                     ) DEFAULT CHARSET=utf8;`;
 var createProjects = `CREATE TABLE IF NOT EXISTS projects (
@@ -23,7 +24,7 @@ var createProjects = `CREATE TABLE IF NOT EXISTS projects (
                     hours smallint(6) DEFAULT NULL,
                     project varchar(45) DEFAULT NULL,
                     info varchar(30) DEFAULT NULL
-                    ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;`;
+                    ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createGroups = `CREATE TABLE IF NOT EXISTS workgroups 
                     (groupId int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     groupName varchar(255) NOT NULL,
@@ -37,6 +38,19 @@ var createSessions = `CREATE TABLE IF NOT EXISTS sessions (
                     data mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
                     PRIMARY KEY (session_id)
                     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`;
+var createHours = `CREATE TABLE IF NOT EXISTS hours
+                  (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+                  username varchar(255),
+                  fullname varchar(255),
+                  workgroup varchar(255),
+                  project varchar(255),
+                  year int,
+                  month varchar(255),
+                  date int,
+                  clockInTime,
+                  clockOutTime,
+                  hours int
+                  ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var insertGroups = {
   Group1: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
@@ -55,7 +69,7 @@ var insertGroups = {
 class Preset {
   presetBuilder() {
     console.time('dbCreate');
-    connection.query(createAccounts + createPersons + createProjects + createGroups + createSessions, function (error, results) {
+    connection.query(createAccounts + createPersons + createProjects + createGroups + createSessions + createHours, function (error, results) {
       console.log(results);
       console.log('preset created');
       console.timeEnd('dbCreate');

@@ -8,8 +8,8 @@ var makePerson = `INSERT IGNORE INTO persons
                   (SELECT groupName FROM workgroups 
                   WHERE groupAuthKey = ?));`;
 
-class NewUser {
-  insert(hash, body) {
+class Users {
+  registerUser(hash, body) {
     console.time('newUser');
     connection.query(makeAccount, [body.username, hash, body.email], function (error, results) {
       console.log(results.insertId);
@@ -22,4 +22,4 @@ class NewUser {
   }
 }
 
-module.exports = NewUser;
+module.exports = Users;

@@ -12,7 +12,7 @@ router.use(
     next();
   },
   async function (req, res, next) {
-    if (req.session.loggedin == true && req.session.username == res.locals.id) {
+    if (req.session.loggedin == true && req.session.username == res.locals.id && req.session.username != 'admin') {
       let check = await checkStatus.checkStatus(req.session.username);
       console.log(check);
       var variables = await checkStatus.populate(check);
@@ -30,6 +30,8 @@ router.use(
           onlunch: variables.onlunch,
         });
       });
+    } else if (req.session.username == 'admin') {
+      res.redirect('../admin');
     } else {
       res.render('loginerror.ejs');
     }
