@@ -33,7 +33,7 @@ router.use(
     } else if (req.session.username == 'admin') {
       res.redirect('../admin');
     } else {
-      res.render('loginerror.ejs');
+      res.render('login', { status: 'Not logged in, please login first', title: 'Login page', loggedinUser: 'Not logged in' });
     }
   }
 );

@@ -31,6 +31,9 @@ var authPost = require('./posts/authpost');
 var userPost = require('./posts/userpost');
 var clockingPost = require('./posts/clocking');
 
+// DEFINE GET
+var adminGet = require('./get/adminget');
+
 var cors = require('cors');
 sessionStore.clear();
 app.use(cors());
@@ -81,6 +84,9 @@ app.use('', registerPost);
 app.use('', authPost);
 app.use('', userPost);
 app.use('', clockingPost);
+
+// Use GET
+app.use('', adminGet);
 // app.use('', testPost);
 
 if (config.runBuilder) {

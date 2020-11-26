@@ -5,7 +5,6 @@ require('../sessionstore');
 const SessionCheck = require('../serverjs/session');
 var sessionCheck = new SessionCheck();
 var bcrypt = require('bcrypt');
-const { promiseImpl } = require('ejs');
 const sessionStore = require('../sessionstore');
 
 // POST login authentication
