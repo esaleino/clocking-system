@@ -56,6 +56,12 @@ var createHours = `CREATE TABLE IF NOT EXISTS hours
                   date int,
                   hours int
                   ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
+var createViews = `CREATE TABLE IF NOT EXISTS page_views
+                  (
+                    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    visitorip varchar(255) NOT NULL,
+                    UNIQUE KEY unique_visitorip (visitorip)
+                  ) AUTO_INCREMENT=1;`;
 var insertGroups = {
   Admin: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
@@ -127,7 +133,8 @@ class Preset {
           createProjects +
           createGroups +
           createSessions +
-          createHours,
+          createHours +
+          createViews,
         function (error, results) {
           console.log(error);
           var checkWarning = results[0].warningCount;
