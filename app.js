@@ -91,7 +91,6 @@ app.use('', adminGet);
 
 if (config.runBuilder) {
   databasePreset.presetBuilder();
-  databasePreset.fillTemplate();
 }
 
 // catch 404 and forward to error handler

@@ -10,15 +10,21 @@ var makePerson = `INSERT IGNORE INTO persons
 
 class Users {
   registerUser(hash, body) {
-    console.time('newUser');
-    connection.query(makeAccount, [body.username, hash, body.email], function (error, results) {
-      console.log(results.insertId);
-      var id = results.insertId;
-      connection.query(makePerson, [id, body.username, body.firstname, body.lastname, body.authkey], function (error, results) {
-        console.timeEnd('newUser');
-        console.log('Filled database');
-      });
-    });
+    connection.query(
+      makeAccount,
+      [body.username, hash, body.email],
+      function (error, results) {
+        //console.log(results.insertId);
+        var id = results.insertId;
+        connection.query(
+          makePerson,
+          [id, body.username, body.firstname, body.lastname, body.authkey],
+          function (error, results) {
+            console.log('User ' + body.username + ' created with id: ' + id);
+          }
+        );
+      }
+    );
   }
 }
 

@@ -1,4 +1,10 @@
 var connection = require('../connectMysql.js');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+var Users = require('../serverjs/users');
+var createUsers = new Users();
+var fs = require('fs');
+
 var createAccounts = `CREATE TABLE IF NOT EXISTS accounts 
                     (id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     username varchar(50) NOT NULL, 
@@ -17,7 +23,6 @@ var createPersons = `CREATE TABLE IF NOT EXISTS persons
                     groupName varchar(255) DEFAULT 'not set',
                     clockedin tinyint(1) NOT NULL DEFAULT 0,
                     onlunch tinyint(1) NOT NULL DEFAULT 0,
-                    clockInTime,
                     UNIQUE KEY unique_username (username)
                     ) DEFAULT CHARSET=utf8;`;
 var createProjects = `CREATE TABLE IF NOT EXISTS projects (
@@ -49,11 +54,13 @@ var createHours = `CREATE TABLE IF NOT EXISTS hours
                   year int,
                   month varchar(255),
                   date int,
-                  clockInTime,
-                  clockOutTime,
                   hours int
                   ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var insertGroups = {
+  Admin: `INSERT IGNORE INTO workgroups 
+          (groupName, groupAuthKey, groupProject) 
+          VALUES ('Admingroup', '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH', 
+          'Administration');`,
   Group1: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
           VALUES ('testGroup1', 'VT5dTmifyE', 
@@ -67,22 +74,143 @@ var insertGroups = {
           VALUES ('testGroup3', 'fgzRHVuemP', 
           'testProject3');`,
 };
+var createAccount = ``;
+var createPerson = ``;
+var users = {};
+users[0] = {
+  firstname: 'Root',
+  lastname: 'Toor',
+  authkey: '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH',
+  username: 'admin',
+  password: 'roottoor',
+  email: 'admin@rootmail.toor',
+};
+users[1] = {
+  firstname: 'John',
+  lastname: 'Doe',
+  authkey: 'VT5dTmifyE',
+  username: 'john',
+  password: 'john',
+  email: 'john@doemail.com',
+};
+users[2] = {
+  fname: 'Druid',
+  lname: 'Wensleydale',
+  workgroup: 'bjNffOEArO',
+  username: 'druid',
+  password: 'druid',
+  email: 'short@longmail.com',
+};
+users[3] = {
+  fname: 'Shequondolisa',
+  lname: 'Bivouac',
+  workgroup: 'fgzRHVuemP',
+  username: 'shequondolisa',
+  password: 'shequondolisa',
+  email: 'fashionista@fashionmail.com',
+};
 
 class Preset {
   presetBuilder() {
+    var self = this;
     console.time('dbCreate');
-    connection.query(createAccounts + createPersons + createProjects + createGroups + createSessions + createHours, function (error, results) {
-      console.log(results);
-      console.log('preset created');
-      console.timeEnd('dbCreate');
+    var promise = new Promise(function (resolve, reject) {
+      connection.query(
+        createAccounts +
+          createPersons +
+          createProjects +
+          createGroups +
+          createSessions +
+          createHours,
+        function (error, results) {
+          console.log(error);
+          var checkWarning = results[0].warningCount;
+          if (checkWarning == 0) {
+            resolve();
+          } else {
+            reject(checkWarning);
+          }
+        }
+      );
     });
+    promise
+      .then(function () {
+        console.log('preset created');
+        console.timeEnd('dbCreate');
+        self.fillTemplate();
+        return;
+      })
+      .catch(function (reject) {
+        console.log(
+          'We have: ' + reject + ' warnings. Probably already built. stopping.'
+        );
+        return;
+      });
   }
   fillTemplate() {
+    var self = this;
+    console.log('hello you should be here?');
     console.time('fillTemplate');
-    connection.query(insertGroups.Group1 + insertGroups.Group2 + insertGroups.Group3, function (error, results) {
-      console.log(results);
-      console.log('filled template values');
-      console.timeEnd('fillTemplate');
+    var promise = new Promise(function (resolve, reject) {
+      connection.query(
+        insertGroups.Admin +
+          insertGroups.Group1 +
+          insertGroups.Group2 +
+          insertGroups.Group3,
+        function (error, results) {
+          console.log(error);
+          var checkWarning = results[0].warningCount;
+          if (checkWarning == 0) {
+            resolve();
+          } else {
+            reject(checkWarning);
+          }
+        }
+      );
+    });
+    promise
+      .then(function () {
+        console.log('filled template values');
+        console.timeEnd('fillTemplate');
+        self.createUsers();
+        return;
+      })
+      .catch(function (reject) {
+        console.log(
+          'We have: ' + reject + ' warnings. Probably already built. stopping.'
+        );
+        return;
+      });
+  }
+  createUsers() {
+    var self = this;
+    console.time('createUsers');
+    var usersKeys = Object.keys(users);
+    for (var i = 0; i < usersKeys.length; i++) {
+      var currentUser = users[i];
+      var salt = bcrypt.genSaltSync(saltRounds);
+      var hash = bcrypt.hashSync(currentUser.password, salt);
+      console.log(
+        'Creating user: ' + currentUser.username + ' with hash: ' + hash
+      );
+      createUsers.registerUser(hash, currentUser);
+    }
+    console.timeEnd('createUsers');
+    self.writeConfig();
+  }
+  writeConfig() {
+    fs.readFile('./config.js', 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+      var result = data.replace(
+        /config.runBuilder = true/g,
+        'config.runBuilder = false'
+      );
+      fs.writeFile('./config.js', result, 'utf8', function (err) {
+        if (err) return console.log(err);
+      });
+      return console.log('Changed config.runBuilder to false');
     });
   }
 }
