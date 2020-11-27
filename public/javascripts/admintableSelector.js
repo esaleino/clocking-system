@@ -20,7 +20,7 @@ window.addAdminRowHandlers = () => {
               cell[i] = row.getElementsByTagName('td'[i]);
               console.log(cell[i]);
             }
-            fillForm(cell);
+            //fillForm(cell);
           }
           // var cell1 = row.getElementsByTagName('td')[0];
           // var cell2 = row.getElementsByTagName('td')[1];
@@ -42,9 +42,7 @@ window.addAdminRowHandlers = () => {
 };
 
 function fillForm(cell) {
-  console.log(id, task, time, notes);
-  document.getElementById('identifier').value = parseInt(id);
-  document.getElementById('task').value = task;
-  document.getElementById('time').value = Number(time);
-  document.getElementById('notes').value = notes;
+  if (currentSection == 'userlist') {
+    document;
+  }
 }
