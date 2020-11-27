@@ -7,6 +7,7 @@
     <script type="module" src="/javascripts/admin.js"></script>
     <script>
       var myUsername = '<%-JSON.stringify(loggedinUser)%>';
+      var currentSection = '';
     </script>
   </head>
 
@@ -22,6 +23,30 @@
         <thead id="tableHead"></thead>
         <tbody id="tableBody"></tbody>
       </table>
+      <form method="POST" action="../modifyuser">
+        <div class="form-group">
+          <div class="form-row justify-content-between" id="form">
+            <div class="col-sm-3 form-group">
+              <p class="mb-2">SELECTED USER</p>
+              <input id="username" name="username" class="form-control mb-2" />
+              <p class="mb-2">USER EMAIL</p>
+              <input id="email" name="email" class="form-control mb-2" />
+            </div>
+            <div class="col-sm-3 form-group">
+              <p class="mb-2">FIRST NAME</p>
+              <input id="fname" name="lastname" class="form-control mb-2" />
+              <p class="mb-2">FORGOT PASSWORD</p>
+              <input id="forgotpassword" name="forgotpassword" class="form-control mb-2" />
+            </div>
+            <div class="col-sm-3">
+              <p class="mb-2">LAST NAME</p>
+              <input id="lname" name="lastname" class="form-control mb-2" />
+              <p class="mb-2">GROUP NAME</p>
+              <input id="gname" name="groupname" class="form-control mb-2" />
+            </div>
+          </div>
+        </div>
+      </form>
     </main>
   </body>
 </html>

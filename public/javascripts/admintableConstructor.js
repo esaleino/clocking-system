@@ -1,14 +1,17 @@
-import './tableSelector.js';
+import './admintableSelector.js';
 
 window.admintableConstruct = async (getResults) => {
   var data = getResults;
   var dataKeys = Object.keys(data[0]);
+  console.log(data);
+  console.log(dataKeys);
   var tableHead = document.getElementById('tableHead');
   var tableBody = document.getElementById('tableBody');
   tableHead.innerHTML = '';
   tableBody.innerHTML = '';
   var tr = '<tr>';
   for (var i = 0; i < dataKeys.length; i++) {
+    console.log(i);
     tr += '<th class="th-sm">' + dataKeys[i].toUpperCase() + '</th>';
   }
   tr += '</tr>';
@@ -17,7 +20,11 @@ window.admintableConstruct = async (getResults) => {
     tr = '<tr>';
     var dataLoop = data[i];
     for (var x = 0; x < dataKeys.length; x++) {
-      tr += '<td>' + dataLoop[dataKeys[x]] + '</td>';
+      if (dataKeys[x] == 'forgotpassword') {
+        tr += '<td class="bg-danger">' + dataLoop[dataKeys[x]] + '</td>';
+      } else {
+        tr += '<td >' + dataLoop[dataKeys[x]] + '</td>';
+      }
     }
     tr += '</tr>';
     tableBody.innerHTML += tr;
@@ -49,8 +56,8 @@ window.admintableConstruct = async (getResults) => {
   //   tr += '</tr>';
   //   tbody.innerHTML += tr;
   // }
-  // await formatTable();
-  // await addRowHandlers();
+  await formatTable();
+  await addAdminRowHandlers();
 };
 
 function formatTable() {

@@ -2,6 +2,7 @@ import './admintableConstructor.js';
 
 $('#getUsers').click(function (event) {
   event.preventDefault();
+  currentSection = 'userlist';
   document.getElementById('sectionTitle').innerHTML = 'User List';
   ajaxGet();
 });
@@ -13,6 +14,7 @@ function ajaxGet() {
     type: 'GET',
     url: window.location + '/getUsers',
     success: function (result) {
+      console.log(result);
       sendResults = result;
       admintableConstruct(sendResults);
     },

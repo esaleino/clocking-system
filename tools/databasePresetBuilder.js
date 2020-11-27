@@ -5,6 +5,8 @@ var createAccounts = `CREATE TABLE IF NOT EXISTS accounts
                     password varchar(255) NOT NULL, 
                     email varchar(100) NOT NULL, 
                     validated tinyint(4) NOT NULL, 
+                    forgotpassword tinyint(4) NOT NULL DEFAULT 0,
+                    changepassword tinyint(4) NOT NULL DEFAULT 0,
                     UNIQUE KEY unique_username (username)
                     ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createPersons = `CREATE TABLE IF NOT EXISTS persons 
