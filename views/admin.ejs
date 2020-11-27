@@ -14,39 +14,22 @@
   <body onload="pageLoadAdmin()">
     <%- include('sidebarAdmin')-%>
     <main role="main" class="col-md-9 col-sm-6 ml-sm-auto col-lg-10 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+      >
         <h1 class="h2">Dashboard</h1>
         <div class="btn-toolbar mb-2 mb-md-0"></div>
       </div>
-      <h2 id="sectionTitle">hey</h2>
-      <table class="table table-striped table-bordered w-100" id="table" style="width: 100%">
+      <h2 id="sectionTitle">This section will hold data</h2>
+      <table
+        class="table table-striped table-bordered w-100"
+        id="table"
+        style="width: 100%"
+      >
         <thead id="tableHead"></thead>
         <tbody id="tableBody"></tbody>
       </table>
-      <form method="POST" action="../modifyuser">
-        <div class="form-group">
-          <div class="form-row justify-content-between" id="form">
-            <div class="col-sm-3 form-group">
-              <p class="mb-2">SELECTED USER</p>
-              <input id="username" name="username" class="form-control mb-2" />
-              <p class="mb-2">USER EMAIL</p>
-              <input id="email" name="email" class="form-control mb-2" />
-            </div>
-            <div class="col-sm-3 form-group">
-              <p class="mb-2">FIRST NAME</p>
-              <input id="fname" name="lastname" class="form-control mb-2" />
-              <p class="mb-2">FORGOT PASSWORD</p>
-              <input id="forgotpassword" name="forgotpassword" class="form-control mb-2" />
-            </div>
-            <div class="col-sm-3">
-              <p class="mb-2">LAST NAME</p>
-              <input id="lname" name="lastname" class="form-control mb-2" />
-              <p class="mb-2">GROUP NAME</p>
-              <input id="gname" name="groupname" class="form-control mb-2" />
-            </div>
-          </div>
-        </div>
-      </form>
+      <div id="form"></div>
     </main>
   </body>
 </html>

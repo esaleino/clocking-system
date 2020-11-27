@@ -1,19 +1,20 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var sessionStore = require("../sessionstore");
-var session = require("express-session");
+var sessionStore = require('../sessionstore');
+var session = require('express-session');
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get('/', function (req, res, next) {
   //console.log(session.username);
   //console.log(req.session.username);
   if (req.session.loggedin) {
     currentUser = req.session.username;
   } else {
-    currentUser = "Not logged in";
+    currentUser = 'Not logged in';
   }
-  res.render("index", {
-    title: "Welcome to my website",
+  res.render('index', {
+    title: 'Welcome to my website',
     loggedinUser: currentUser,
+    currentPage: 'Index',
   });
 });
 

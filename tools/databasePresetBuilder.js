@@ -74,8 +74,6 @@ var insertGroups = {
           VALUES ('testGroup3', 'fgzRHVuemP', 
           'testProject3');`,
 };
-var createAccount = ``;
-var createPerson = ``;
 var users = {};
 users[0] = {
   firstname: 'Root',
@@ -84,6 +82,8 @@ users[0] = {
   username: 'admin',
   password: 'roottoor',
   email: 'admin@rootmail.toor',
+  forgotpassword: '0',
+  changepassword: '0',
 };
 users[1] = {
   firstname: 'John',
@@ -92,22 +92,28 @@ users[1] = {
   username: 'john',
   password: 'john',
   email: 'john@doemail.com',
+  forgotpassword: '0',
+  changepassword: '0',
 };
 users[2] = {
-  fname: 'Druid',
-  lname: 'Wensleydale',
-  workgroup: 'bjNffOEArO',
+  firstname: 'Druid',
+  lastname: 'Wensleydale',
+  authkey: 'bjNffOEArO',
   username: 'druid',
   password: 'druid',
   email: 'short@longmail.com',
+  forgotpassword: '1',
+  changepassword: '0',
 };
 users[3] = {
-  fname: 'Shequondolisa',
-  lname: 'Bivouac',
-  workgroup: 'fgzRHVuemP',
+  firstname: 'Shequondolisa',
+  lastname: 'Bivouac',
+  authkey: 'fgzRHVuemP',
   username: 'shequondolisa',
   password: 'shequondolisa',
   email: 'fashionista@fashionmail.com',
+  forgotpassword: '0',
+  changepassword: '1',
 };
 
 class Preset {

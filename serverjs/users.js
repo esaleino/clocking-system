@@ -20,7 +20,21 @@ class Users {
           makePerson,
           [id, body.username, body.firstname, body.lastname, body.authkey],
           function (error, results) {
-            console.log('User ' + body.username + ' created with id: ' + id);
+            if (body.forgotpassword == 1 || body.changepassword == 1) {
+              connection.query(
+                'UPDATE accounts SET forgotpassword = ?, changepassword = ? WHERE username = ?',
+                [body.forgotpassword, body.changepassword, body.username],
+                function (err, results) {
+                  return console.log(
+                    'User ' + body.username + ' created with id: ' + id
+                  );
+                }
+              );
+            } else {
+              return console.log(
+                'User ' + body.username + ' created with id: ' + id
+              );
+            }
           }
         );
       }

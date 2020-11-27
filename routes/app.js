@@ -12,28 +12,42 @@ router.use(
     next();
   },
   async function (req, res, next) {
-    if (req.session.loggedin == true && req.session.username == res.locals.id && req.session.username != 'admin') {
+    if (
+      req.session.loggedin == true &&
+      req.session.username == res.locals.id &&
+      req.session.username != 'admin'
+    ) {
       let check = await checkStatus.checkStatus(req.session.username);
       console.log(check);
       var variables = await checkStatus.populate(check);
       console.log(variables);
-      connection.query('SELECT * FROM projects WHERE username = ?', [req.session.username], function (err, results, fields) {
-        // console.log(results);
-        var response = results;
-        // console.log(response);
-        console.log('connected as id ' + connection.threadId);
-        res.render('app', {
-          title: 'Welcome back, ' + req.session.username + '!',
-          loggedinUser: req.session.username,
-          tableData: response,
-          clockin: variables.clockedin,
-          onlunch: variables.onlunch,
-        });
-      });
+      connection.query(
+        'SELECT * FROM projects WHERE username = ?',
+        [req.session.username],
+        function (err, results, fields) {
+          // console.log(results);
+          var response = results;
+          // console.log(response);
+          console.log('connected as id ' + connection.threadId);
+          res.render('app', {
+            title: 'Welcome back, ' + req.session.username + '!',
+            loggedinUser: req.session.username,
+            tableData: response,
+            clockin: variables.clockedin,
+            onlunch: variables.onlunch,
+            currentPage: 'App Panel',
+          });
+        }
+      );
     } else if (req.session.username == 'admin') {
       res.redirect('../admin');
     } else {
-      res.render('login', { status: 'Not logged in, please login first', title: 'Login page', loggedinUser: 'Not logged in' });
+      res.render('login', {
+        status: 'Not logged in, please login first',
+        title: 'Login page',
+        loggedinUser: 'Not logged in',
+        currentPage: 'Login Panel',
+      });
     }
   }
 );
@@ -41,7 +55,12 @@ router.get('/', function (req, res) {
   if (req.session.loggedin == true) {
     res.redirect('/app/' + req.session.username);
   } else {
-    res.render('login', { status: 'Not logged in, please login first', title: 'Login page', loggedinUser: 'Not logged in' });
+    res.render('login', {
+      status: 'Not logged in, please login first',
+      title: 'Login page',
+      loggedinUser: 'Not logged in',
+      currentPage: 'Login Panel',
+    });
   }
 });
 //router.get("/:id", function (req, res, next) {});

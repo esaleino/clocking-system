@@ -18,6 +18,7 @@ router.use(
         title: 'Welcome to the register page.',
         errormessage1: 'User already exists.',
         errormessage2: 'Email already in use.',
+        currentPage: 'Register Panel',
       });
     }
   }
@@ -29,6 +30,7 @@ router.get('/', function (req, res, next) {
     loggedinUser: '',
     errormessage1: '',
     errormessage2: '',
+    currentPage: 'Register Panel',
   });
 });
 

@@ -7,6 +7,16 @@ window.addAdminRowHandlers = () => {
   var rows = table.getElementsByTagName('tr');
   for (i = 1; i < rows.length; i++) {
     var currentRow = table.rows[i];
+    console.log(currentRow);
+    if (currentSection == 'userlist') {
+      var temp = currentRow.getElementsByTagName('td')[4].innerHTML;
+      var temp2 = currentRow.getElementsByTagName('td')[6].innerHTML;
+      if (temp == 'true' && temp2 != 'true') {
+        currentRow.className = 'bg-danger';
+      } else if (temp2 == 'true') {
+        currentRow.className = 'bg-warning';
+      }
+    }
     var createClickHandler = function (row) {
       return function () {
         if (placeholder != row) {
@@ -20,7 +30,7 @@ window.addAdminRowHandlers = () => {
               cell[i] = row.getElementsByTagName('td'[i]);
               console.log(cell[i]);
             }
-            //fillForm(cell);
+            fillForm(cell);
           }
           // var cell1 = row.getElementsByTagName('td')[0];
           // var cell2 = row.getElementsByTagName('td')[1];
@@ -43,6 +53,10 @@ window.addAdminRowHandlers = () => {
 
 function fillForm(cell) {
   if (currentSection == 'userlist') {
-    document;
+    var cellKeys = Object.keys(cell);
+    console.log(cellKeys);
+    for (var i = 0; i < cellKeys.length; i++) {
+      form.getElementsByTagName('input')[i].value = i;
+    }
   }
 }

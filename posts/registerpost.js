@@ -13,25 +13,33 @@ app.post('/registerpost', function (req, res) {
   // Set username as fetched username from client
   var username = req.body.username;
   // Chech that passwords match and are not empty
-  if (req.body.password == req.body.passwordCheck && req.body.password != '' && req.body.password != undefined) {
+  if (
+    req.body.password == req.body.passwordCheck &&
+    req.body.password != '' &&
+    req.body.password != undefined
+  ) {
     console.log('password ok!');
     // userCheck promise for making a database check for existing username
     var userCheck = new Promise(function (resolve, reject) {
-      connection.query('SELECT * FROM accounts WHERE username = ?', [username], function (error, results, fields) {
-        // IF statement for result data
+      connection.query(
+        'SELECT * FROM accounts WHERE username = ?',
+        [username],
+        function (error, results, fields) {
+          // IF statement for result data
 
-        if (results == undefined) {
-          // An error has occured
-          console.log(error);
-          reject(error);
-        } else if (results.length == 0) {
-          // IF no results returned => resolve
-          resolve('OK!');
-        } else {
-          // IF returns results, user already exists => reject
-          reject('User already exists.');
+          if (results == undefined) {
+            // An error has occured
+            console.log(error);
+            reject(error);
+          } else if (results.length == 0) {
+            // IF no results returned => resolve
+            resolve('OK!');
+          } else {
+            // IF returns results, user already exists => reject
+            reject('User already exists.');
+          }
         }
-      });
+      );
     });
     userCheck
       .then(function () {

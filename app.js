@@ -15,7 +15,6 @@ var databasePreset = new Preset();
 
 // DEFINE ROUTERS
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login');
 var registerRouter = require('./routes/register');
 var adminRouter = require('./routes/admin');
@@ -72,7 +71,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Use routers
 app.use('/', indexRouter);
 app.use('/index', indexRouter);
-app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/register', registerRouter);
 app.use('/admin', adminRouter);
