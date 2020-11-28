@@ -80,47 +80,47 @@ var insertGroups = {
           VALUES ('testGroup3', 'fgzRHVuemP', 
           'testProject3');`,
 };
-var users = {};
-users[0] = {
-  firstname: 'Root',
-  lastname: 'Toor',
-  authkey: '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH',
-  username: 'admin',
-  password: 'roottoor',
-  email: 'admin@rootmail.toor',
-  forgotpassword: '0',
-  changepassword: '0',
-};
-users[1] = {
-  firstname: 'John',
-  lastname: 'Doe',
-  authkey: 'VT5dTmifyE',
-  username: 'john',
-  password: 'john',
-  email: 'john@doemail.com',
-  forgotpassword: '0',
-  changepassword: '0',
-};
-users[2] = {
-  firstname: 'Druid',
-  lastname: 'Wensleydale',
-  authkey: 'bjNffOEArO',
-  username: 'druid',
-  password: 'druid',
-  email: 'short@longmail.com',
-  forgotpassword: '1',
-  changepassword: '0',
-};
-users[3] = {
-  firstname: 'Shequondolisa',
-  lastname: 'Bivouac',
-  authkey: 'fgzRHVuemP',
-  username: 'shequondolisa',
-  password: 'shequondolisa',
-  email: 'fashionista@fashionmail.com',
-  forgotpassword: '0',
-  changepassword: '1',
-};
+var users = JSON.parse(fs.readFileSync('./tools/namelist.json', 'utf8'));
+// users[0] = {
+//   firstname: 'Root',
+//   lastname: 'Toor',
+//   authkey: '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH',
+//   username: 'admin',
+//   password: 'roottoor',
+//   email: 'admin@rootmail.toor',
+//   forgotpassword: '0',
+//   changepassword: '0',
+// };
+// users[1] = {
+//   firstname: 'John',
+//   lastname: 'Doe',
+//   authkey: 'VT5dTmifyE',
+//   username: 'john',
+//   password: 'john',
+//   email: 'john@doemail.com',
+//   forgotpassword: '0',
+//   changepassword: '0',
+// };
+// users[2] = {
+//   firstname: 'Druid',
+//   lastname: 'Wensleydale',
+//   authkey: 'bjNffOEArO',
+//   username: 'druid',
+//   password: 'druid',
+//   email: 'short@longmail.com',
+//   forgotpassword: '1',
+//   changepassword: '0',
+// };
+// users[3] = {
+//   firstname: 'Shequondolisa',
+//   lastname: 'Bivouac',
+//   authkey: 'fgzRHVuemP',
+//   username: 'shequondolisa',
+//   password: 'shequondolisa',
+//   email: 'fashionista@fashionmail.com',
+//   forgotpassword: '0',
+//   changepassword: '1',
+// };
 
 class Preset {
   presetBuilder() {
@@ -206,7 +206,7 @@ class Preset {
       console.log(
         'Creating user: ' + currentUser.username + ' with hash: ' + hash
       );
-      createUsers.registerUser(hash, currentUser);
+      createUsers.registerBuilder(hash, currentUser);
     }
     console.timeEnd('createUsers');
     self.writeConfig();
