@@ -16,4 +16,13 @@ adminQuery.getUnverified = `SELECT persons.username, accounts.email,
                             ON persons.id=accounts.id
                             WHERE persons.username != 'admin' AND accounts.validated = 0`;
 
+adminQuery.userVerify = `UPDATE accounts 
+                        SET validated = 1 
+                        WHERE username = ?;`;
+adminQuery.userRemove = `DELETE accounts, persons 
+                        FROM accounts 
+                        INNER JOIN persons 
+                        ON accounts.username = persons.username 
+                        WHERE accounts.username = ?`;
+
 module.exports = adminQuery;

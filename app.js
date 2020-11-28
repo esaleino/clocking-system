@@ -29,6 +29,7 @@ var registerPost = require('./posts/registerpost');
 var authPost = require('./posts/authpost');
 var userPost = require('./posts/userpost');
 var clockingPost = require('./posts/clocking');
+var adminPost = require('./posts/adminPost');
 
 // DEFINE GET
 var adminGet = require('./get/adminget');
@@ -78,6 +79,7 @@ app.use('/app', appRouter);
 app.use('/logout', logoutRouter);
 
 // Use POSTS
+app.use('', adminPost);
 app.use('', registerPost);
 app.use('', authPost);
 app.use('', userPost);

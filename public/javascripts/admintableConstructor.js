@@ -66,21 +66,21 @@ window.admintableConstruct = async (getResults) => {
     }
     if (currentSection == 'userverification') {
       var thisVerifyId = 'verify' + i;
-      var thisVerifyName = dataLoop.username;
+      var thisVerifyName = 'vr' + dataLoop.username;
       var thisRemoveId = 'remove' + i;
-      var thisRemoveName = dataLoop.username;
+      var thisRemoveName = 'rm' + dataLoop.username;
       tr +=
         '<td><input class="btn btn-primary" id=' +
         thisVerifyId +
         ' name=' +
         thisVerifyName +
-        ' onclick="userVerify(id)" value="VALIDATE">';
+        ' onclick="userVerify(this)" value="VALIDATE">';
       tr +=
         '<td><input class="btn btn-danger" id=' +
         thisRemoveId +
         ' name=' +
         thisRemoveName +
-        ' onclick="userRemove(id)" value="REMOVE">';
+        ' onclick="userRemove(this)" value="REMOVE">';
     }
     tr += '</tr>';
     tableBody.innerHTML += tr;
