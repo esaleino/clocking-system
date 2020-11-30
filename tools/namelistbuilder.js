@@ -23,27 +23,23 @@ users[0] = {
   changepassword: 0,
 };
 
-if (writeRaw) {
-  var lineNum = 0;
-  var fullname = {};
-  fullname.firstname = [];
-  fullname.lastname = [];
-  fullname.namecount = [];
-  readInterface
-    .on('line', function (line) {
-      var currentReadFirstname = line.split(' ')[0];
-      var currentReadLastname = line.split(' ')[1];
-      fullname.firstname[lineNum] = currentReadFirstname;
-      fullname.lastname[lineNum] = currentReadLastname;
-      lineNum++;
-    })
-    .on('close', function (line) {
-      fullname.namecount[0] = lineNum;
-      writeMain(fullname);
-    });
-} else {
-  readJson();
-}
+var lineNum = 0;
+var fullname = {};
+fullname.firstname = [];
+fullname.lastname = [];
+fullname.namecount = [];
+readInterface
+  .on('line', function (line) {
+    var currentReadFirstname = line.split(' ')[0];
+    var currentReadLastname = line.split(' ')[1];
+    fullname.firstname[lineNum] = currentReadFirstname;
+    fullname.lastname[lineNum] = currentReadLastname;
+    lineNum++;
+  })
+  .on('close', function (line) {
+    fullname.namecount[0] = lineNum;
+    writeMain(fullname);
+  });
 
 function readJson() {
   let rawdata = fs.readFileSync('namelist.json', 'utf8');
@@ -78,31 +74,17 @@ function writeMain(data) {
     }
     users[i + 1].firstname = currentFname;
     users[i + 1].lastname = currentLname;
-    users[i + 1].username = currentFname;
-    users[i + 1].email = `${currentFname}.${currentLname}@email.com`;
-    users[i + 1].password = currentFname;
+    users[i + 1].username = currentFname.toLowerCase();
+    users[
+      i + 1
+    ].email = `${currentFname.toLowerCase()}.${currentLname.toLowerCase()}@email.com`;
+    users[i + 1].password = currentFname.toLowerCase();
     users[i + 1].authkey = authKey[authRandom];
   }
   fs.writeFile('namelist.json', JSON.stringify(users), (err) => {
     if (err) throw err;
     console.log('file saved');
   });
-  //   let namelist = data;
-  //   let length = namelist.namecount[0];
-  //   console.log(namelist.firstname);
-  //   console.log(namelist.namecount[0]);
-  //   var string = `var users = {};`;
-  //   for (var i = 0; i < length; i++) {
-  //     var currentFirstname = namelist.firstname[i];
-  //     var currentLastname = namelist.lastname[i];
-  //     string += `users[${
-  //       i + 1
-  //     }] = { firstname: "${currentFirstname}", lastname: "${currentLastname}"};`;
-  //   }
-  //   fs.writeFile("namelist.js", string, (err) => {
-  //     if (err) throw err;
-  //     console.log("file saved");
-  //   });
 }
 
 function getRandomInt(max) {

@@ -52,10 +52,11 @@ window.addAdminRowHandlers = () => {
 };
 
 function fillForm(cell) {
+  var form = document.getElementById('form');
   if (currentSection == 'userlist') {
     var cellKeys = Object.keys(cell);
     console.log(cellKeys);
-    for (var i = 0; i < cellKeys.length; i++) {
+    for (var i = 0; i < cellKeys.length - 1; i++) {
       form.getElementsByTagName('input')[i].value = i;
     }
   }
