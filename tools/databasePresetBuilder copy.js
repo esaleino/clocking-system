@@ -1,52 +1,52 @@
-var connection = require('../connectPostgres.js');
+var connection = require('../connectMysql.js');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var Users = require('../serverjs/users');
 var createUsers = new Users();
 var fs = require('fs');
-const e = require('express');
 
 var createAccounts = `CREATE TABLE IF NOT EXISTS accounts 
-                    (id SERIAL PRIMARY KEY,
+                    (id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     username varchar(50) NOT NULL, 
                     password varchar(255) NOT NULL, 
                     email varchar(100) NOT NULL, 
-                    validated smallint NOT NULL, 
-                    forgotpassword smallint NOT NULL DEFAULT 0,
-                    changepassword smallint NOT NULL DEFAULT 0,
-                    CONSTRAINT unique_username UNIQUE (username)
-                    );`;
+                    validated tinyint(4) NOT NULL, 
+                    forgotpassword tinyint(4) NOT NULL DEFAULT 0,
+                    changepassword tinyint(4) NOT NULL DEFAULT 0,
+                    UNIQUE KEY unique_username (username)
+                    ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createPersons = `CREATE TABLE IF NOT EXISTS persons 
                     (id int NOT NULL PRIMARY KEY,
                     username varchar(255) NOT NULL,
                     LastName varchar(255) DEFAULT 'not set',
                     FirstName varchar(255) DEFAULT 'not set',
                     groupName varchar(255) DEFAULT 'not set',
-                    clockedin smallint NOT NULL DEFAULT 0,
-                    onlunch smallint NOT NULL DEFAULT 0
-                    );`;
+                    clockedin tinyint(1) NOT NULL DEFAULT 0,
+                    onlunch tinyint(1) NOT NULL DEFAULT 0,
+                    UNIQUE KEY unique_username (username)
+                    ) DEFAULT CHARSET=utf8;`;
 var createProjects = `CREATE TABLE IF NOT EXISTS projects (
-                    id SERIAL PRIMARY KEY,
+                    id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     username varchar(30) NOT NULL,
-                    hours smallint DEFAULT NULL,
+                    hours smallint(6) DEFAULT NULL,
                     project varchar(45) DEFAULT NULL,
                     info varchar(30) DEFAULT NULL
-                    );`;
+                    ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createGroups = `CREATE TABLE IF NOT EXISTS workgroups 
-                    (groupId SERIAL PRIMARY KEY,
+                    (groupId int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     groupName varchar(255) NOT NULL,
                     groupAuthKey varchar(255) NOT NULL, 
                     groupProject varchar(255) NOT NULL,
-                    CONSTRAINT unique_groupAuthKey UNIQUE (groupAuthKey)
-                    );`;
+                    UNIQUE KEY unique_groupAuthKey (groupAuthKey)
+                    ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createSessions = `CREATE TABLE IF NOT EXISTS sessions (
-                    session_id varchar(128) NOT NULL,
-                    expires int check (expires > 0) NOT NULL,
-                    data text DEFAULT NULL,
+                    session_id varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+                    expires int(11) unsigned NOT NULL,
+                    data mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
                     PRIMARY KEY (session_id)
-                    );`;
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`;
 var createHours = `CREATE TABLE IF NOT EXISTS hours
-                  (id SERIAL PRIMARY KEY, 
+                  (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, 
                   username varchar(255),
                   fullname varchar(255),
                   workgroup varchar(255),
@@ -55,30 +55,30 @@ var createHours = `CREATE TABLE IF NOT EXISTS hours
                   month varchar(255),
                   date int,
                   hours int
-                  );`;
+                  ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 var createViews = `CREATE TABLE IF NOT EXISTS page_views
                   (
-                  id SERIAL PRIMARY KEY,
-                  visitorip varchar(255) NOT NULL,
-                  CONSTRAINT unique_visitorip UNIQUE (visitorip)
-                  );`;
+                    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    visitorip varchar(255) NOT NULL,
+                    UNIQUE KEY unique_visitorip (visitorip)
+                  ) AUTO_INCREMENT=1;`;
 var insertGroups = {
-  Admin: `INSERT INTO workgroups 
-  (groupName, groupAuthKey, groupProject) 
-  VALUES ('Admingroup', '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH', 
-  'Administration') ON CONFLICT DO NOTHING;`,
-  Group1: `INSERT INTO workgroups 
+  Admin: `INSERT IGNORE INTO workgroups 
+          (groupName, groupAuthKey, groupProject) 
+          VALUES ('Admingroup', '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH', 
+          'Administration');`,
+  Group1: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
           VALUES ('testGroup1', 'VT5dTmifyE', 
-          'testProject1')ON CONFLICT DO NOTHING;`,
-  Group2: `INSERT INTO workgroups 
+          'testProject1');`,
+  Group2: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
           VALUES ('testGroup2', 'bjNffOEArO', 
-          'testProject2')ON CONFLICT DO NOTHING;`,
-  Group3: `INSERT INTO workgroups 
+          'testProject2');`,
+  Group3: `INSERT IGNORE INTO workgroups 
           (groupName, groupAuthKey, groupProject) 
           VALUES ('testGroup3', 'fgzRHVuemP', 
-          'testProject3')ON CONFLICT DO NOTHING;`,
+          'testProject3');`,
 };
 var users = JSON.parse(
   fs.readFileSync('./namelist.json', 'utf8')
@@ -137,12 +137,13 @@ class Preset {
           createSessions +
           createHours +
           createViews,
-        (err, res) => {
-          console.log(err, res);
-          if (err) {
-            reject();
-          } else {
+        function (error, results) {
+          console.log(error);
+          var checkWarning = results[0].warningCount;
+          if (checkWarning == 0) {
             resolve();
+          } else {
+            reject(checkWarning);
           }
         }
       );
@@ -173,11 +174,13 @@ class Preset {
           insertGroups.Group1 +
           insertGroups.Group2 +
           insertGroups.Group3,
-        (err, res) => {
-          if (err) {
-            reject(err);
-          } else {
+        function (error, results) {
+          console.log(error);
+          var checkWarning = results[0].warningCount;
+          if (checkWarning == 0) {
             resolve();
+          } else {
+            reject(checkWarning);
           }
         }
       );
@@ -222,7 +225,7 @@ class Preset {
   }
   writeConfig() {
     fs.readFile(
-      '../config.js',
+      './config.js',
       'utf8',
       function (err, data) {
         if (err) {
