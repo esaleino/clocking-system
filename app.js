@@ -12,7 +12,7 @@ var sessionStore = require('./sessionstore');
 var config = require('./config');
 const Preset = require('./tools/databasePresetBuilder');
 var databasePreset = new Preset();
-
+var sessionStore = require('./sessionStore');
 // DEFINE ROUTERS
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
@@ -35,7 +35,6 @@ var adminPost = require('./posts/adminPost');
 var adminGet = require('./get/adminget');
 
 var cors = require('cors');
-sessionStore.clear();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(
@@ -47,7 +46,7 @@ app.use(
   session({
     key: 'session_cookie_name',
     secret: 'session_cookie_secret',
-    store: sessionStore,
+    store: sessionStore.sessionStore,
     resave: false,
     saveUninitialized: false,
   })
@@ -102,7 +101,8 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error =
+    req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   console.log(err.status);

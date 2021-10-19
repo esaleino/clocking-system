@@ -1,20 +1,34 @@
-const connection = require('../connectMysql');
+const connection = require('../connectPostgres');
 
 class Clocking {
   clockIn(username) {
-    connection.query('UPDATE persons SET clockedin = true WHERE username = ?', [username], function (error, result) {
-      console.log(username + ' Successfully clocked in!');
-    });
+    connection.query(
+      'UPDATE persons SET clockedin = true WHERE username = ?',
+      [username],
+      function (error, result) {
+        console.log(username + ' Successfully clocked in!');
+      }
+    );
   }
   lunch(username) {
-    connection.query('UPDATE persons SET onlunch = true WHERE username = ?', [username], function (error, result) {
-      console.log(username + ' Went to lunch!');
-    });
+    connection.query(
+      'UPDATE persons SET onlunch = true WHERE username = ?',
+      [username],
+      function (error, result) {
+        console.log(username + ' Went to lunch!');
+      }
+    );
   }
   clockOut(username) {
-    connection.query('UPDATE persons SET clockedin = false WHERE username = ?', [username], function (error, result) {
-      console.log(username + ' Successfully clocked out!');
-    });
+    connection.query(
+      'UPDATE persons SET clockedin = false WHERE username = ?',
+      [username],
+      function (error, result) {
+        console.log(
+          username + ' Successfully clocked out!'
+        );
+      }
+    );
   }
 }
 

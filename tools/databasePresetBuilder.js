@@ -81,7 +81,7 @@ var insertGroups = {
           'testProject3')ON CONFLICT DO NOTHING;`,
 };
 var users = JSON.parse(
-  fs.readFileSync('./namelist.json', 'utf8')
+  fs.readFileSync('./tools/namelist.json', 'utf8')
 );
 // users[0] = {
 //   firstname: 'Root',

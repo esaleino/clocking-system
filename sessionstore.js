@@ -1,16 +1,27 @@
 var session = require('express-session');
 const config = require('./config');
-var MySQLStore = require('express-mysql-session')(session);
+var pg = require('pg');
+var pgSession = require('express-pg-session')(session);
 
-var options = {
-  host: config.connectionHost,
-  port: config.connectionPort,
-  user: config.connectionUser,
-  password: config.connectionPassword,
-  database: config.connectionDatabase,
+var pgPool = new pg.Pool({
+  host: process.env.database_host,
+  port: process.env.database_port,
+  user: process.env.database_user,
+  password: process.env.database_password,
+  database: process.env.database_name,
   clearExpired: true,
+});
+
+let columnNames = {
+  session_id: 'session_id',
+  session_data: 'data',
+  expire: 'expires',
 };
 
-var sessionStore = new MySQLStore(options);
+let sessionStore = new pgSession({
+  pool: pgPool,
+  tableName: 'sessions',
+  columns: columnNames,
+});
 
 module.exports = sessionStore;

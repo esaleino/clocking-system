@@ -6,10 +6,11 @@ var ViewsCounter = require('../serverjs/viewcounter.js');
 var viewsCounter = new ViewsCounter();
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  console.log(req.connection.remoteAddress);
-  viewsCounter.doViews(req.connection.remoteAddress);
+  console.log(req.socket.remoteAddress);
+  viewsCounter.doViews(req.socket.remoteAddress);
   //console.log(session.username);
   //console.log(req.session.username);
+  console.log(req.session);
   if (req.session.loggedin) {
     currentUser = req.session.username;
   } else {

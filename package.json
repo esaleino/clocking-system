@@ -15,6 +15,7 @@
     "express": "~4.16.1",
     "express-log-errors": "^2.1.1",
     "express-mysql-session": "^2.1.7",
+    "express-pg-session": "^1.1.0",
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",

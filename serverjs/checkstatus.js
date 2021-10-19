@@ -1,11 +1,15 @@
-var connection = require('../connectMysql');
+var connection = require('../connectPostgres');
 
 class CheckStatus {
   checkStatus(username) {
     return new Promise(function (resolve) {
-      connection.query('SELECT clockedin, onlunch FROM persons WHERE username = ?', [username], function (error, results) {
-        resolve(results[0]);
-      });
+      connection.query(
+        'SELECT clockedin, onlunch FROM persons WHERE username = $1',
+        [username],
+        function (error, results) {
+          resolve(results.row[0]);
+        }
+      );
     });
   }
   populate(passing) {

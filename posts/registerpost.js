@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var connection = require('../connectMysql');
+var connection = require('../connectPostgres');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 var Users = require('../serverjs/users');
@@ -44,10 +44,14 @@ app.post('/registerpost', function (req, res) {
     userCheck
       .then(function () {
         bcrypt.genSalt(saltRounds, (err, salt) => {
-          bcrypt.hash(req.body.password, salt, (err, hash) => {
-            console.log(hash);
-            users.registerUser(hash, req.body);
-          });
+          bcrypt.hash(
+            req.body.password,
+            salt,
+            (err, hash) => {
+              console.log(hash);
+              users.registerUser(hash, req.body);
+            }
+          );
           res.redirect('../login');
         });
       })

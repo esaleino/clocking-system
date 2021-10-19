@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var connection = require('../connectMysql');
+var connection = require('../connectPostgres');
 const adminQuery = require('../serverjs/queryvars');
 const sessionStore = require('../sessionstore');
 var error = {};

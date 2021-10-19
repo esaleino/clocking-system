@@ -4,11 +4,13 @@ const Clocking = require('../serverjs/clocking.js');
 var clocking = new Clocking();
 const CheckStatus = require('../serverjs/checkstatus.js');
 var checkStatus = new CheckStatus();
-var connection = require('../connectMysql');
+var connection = require('../connectPostgres');
 
 app.post('/clocking/:id', async function (req, res) {
   var passingVar = req.params.id;
-  let check = await checkStatus.checkStatus(req.session.username);
+  let check = await checkStatus.checkStatus(
+    req.session.username
+  );
   let populatevars = await checkStatus.populate(check);
   console.log(check);
   console.log(populatevars);
@@ -43,19 +45,24 @@ app.post('/clocking/:id', async function (req, res) {
       break;
   }
   console.log('please dont...');
-  connection.query('SELECT * FROM projects WHERE username = ?', [req.session.username], function (err, results, fields) {
-    // console.log(results);
-    var response = results;
-    // console.log(response);
-    console.log('connected as id ' + connection.threadId);
-    res.render('app', {
-      title: 'Welcome back, ' + req.session.username + '!',
-      loggedinUser: req.session.username,
-      tableData: response,
-      clockin: clockIn,
-      onlunch: onLunch,
-    });
-  });
+  connection.query(
+    'SELECT * FROM projects WHERE username = ?',
+    [req.session.username],
+    function (err, results, fields) {
+      // console.log(results);
+      var response = results;
+      // console.log(response);
+      console.log('connected as id ' + connection.threadId);
+      res.render('app', {
+        title:
+          'Welcome back, ' + req.session.username + '!',
+        loggedinUser: req.session.username,
+        tableData: response,
+        clockin: clockIn,
+        onlunch: onLunch,
+      });
+    }
+  );
 });
 
 module.exports = app;

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var connection = require('../connectMysql');
+var connection = require('../connectPostgres');
 const CheckStatus = require('../serverjs/checkstatus.js');
 var checkStatus = new CheckStatus();
 
@@ -17,7 +17,9 @@ router.use(
       req.session.username == res.locals.id &&
       req.session.username != 'admin'
     ) {
-      let check = await checkStatus.checkStatus(req.session.username);
+      let check = await checkStatus.checkStatus(
+        req.session.username
+      );
       console.log(check);
       var variables = await checkStatus.populate(check);
       console.log(variables);
@@ -28,9 +30,12 @@ router.use(
           // console.log(results);
           var response = results;
           // console.log(response);
-          console.log('connected as id ' + connection.threadId);
+          console.log(
+            'connected as id ' + connection.threadId
+          );
           res.render('app', {
-            title: 'Welcome back, ' + req.session.username + '!',
+            title:
+              'Welcome back, ' + req.session.username + '!',
             loggedinUser: req.session.username,
             tableData: response,
             clockin: variables.clockedin,

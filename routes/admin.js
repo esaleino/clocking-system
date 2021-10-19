@@ -1,10 +1,12 @@
 var express = require('express');
-const connection = require('../connectMysql');
+const connection = require('../connectPostgres');
 const sessionStore = require('../sessionstore');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res) {
+  console.log('we must be here');
+  console.log(req.session);
   if (req.session.username == 'admin') {
     res.render('admin', {
       title: 'Welcome to the admin panel!',
