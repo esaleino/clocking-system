@@ -29,7 +29,7 @@ var registerPost = require('./posts/registerpost');
 var authPost = require('./posts/authpost');
 var userPost = require('./posts/userpost');
 var clockingPost = require('./posts/clocking');
-var adminPost = require('./posts/adminPost');
+var adminPost = require('./posts/adminpost');
 
 // DEFINE GET
 var adminGet = require('./get/adminget');
