@@ -106,6 +106,5 @@ dist
 .vscode/
 *.code-workspace
 test.js
-config.js
 .prettierignore
 *.old.js
