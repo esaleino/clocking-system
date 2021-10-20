@@ -12,8 +12,8 @@ app.get('/admin/getUsers', function (req, res) {
     connection.query(
       adminQuery.getUsers,
       function (error, results) {
-        console.log(results);
-        return res.send(results);
+        console.log(sessionStore);
+        return res.send(results.rows);
       }
     );
   } else {
@@ -27,8 +27,7 @@ app.get('/admin/getUnverified', function (req, res) {
     connection.query(
       adminQuery.getUnverified,
       function (error, results) {
-        console.log(results);
-        return res.send(results);
+        return res.send(results.rows);
       }
     );
   } else {

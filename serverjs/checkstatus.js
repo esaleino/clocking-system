@@ -7,7 +7,7 @@ class CheckStatus {
         'SELECT clockedin, onlunch FROM persons WHERE username = $1',
         [username],
         function (error, results) {
-          resolve(results.row[0]);
+          resolve(results.rows[0]);
         }
       );
     });

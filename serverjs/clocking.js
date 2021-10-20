@@ -3,7 +3,7 @@ const connection = require('../connectPostgres');
 class Clocking {
   clockIn(username) {
     connection.query(
-      'UPDATE persons SET clockedin = true WHERE username = ?',
+      'UPDATE persons SET clockedin = true WHERE username = $1',
       [username],
       function (error, result) {
         console.log(username + ' Successfully clocked in!');
@@ -12,7 +12,7 @@ class Clocking {
   }
   lunch(username) {
     connection.query(
-      'UPDATE persons SET onlunch = true WHERE username = ?',
+      'UPDATE persons SET onlunch = true WHERE username = $1',
       [username],
       function (error, result) {
         console.log(username + ' Went to lunch!');
@@ -21,7 +21,7 @@ class Clocking {
   }
   clockOut(username) {
     connection.query(
-      'UPDATE persons SET clockedin = false WHERE username = ?',
+      'UPDATE persons SET clockedin = false WHERE username = $1',
       [username],
       function (error, result) {
         console.log(

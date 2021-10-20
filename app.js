@@ -48,6 +48,7 @@ app.use(
     secret: 'session_cookie_secret',
     store: sessionStore.sessionStore,
     resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
     saveUninitialized: false,
   })
 );
