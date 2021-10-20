@@ -218,7 +218,8 @@ class Preset {
       createUsers.registerBuilder(hash, currentUser);
     }
     console.timeEnd('createUsers');
-    self.writeConfig();
+    process.env.run_builder = false;
+    //self.writeConfig();
   }
   writeConfig() {
     fs.readFile(

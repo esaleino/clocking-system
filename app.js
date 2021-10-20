@@ -89,7 +89,7 @@ app.use('', clockingPost);
 app.use('', adminGet);
 // app.use('', testPost);
 
-if (config.runBuilder) {
+if (process.env.run_builder) {
   databasePreset.presetBuilder();
 }
 
