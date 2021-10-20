@@ -12,7 +12,7 @@ var sessionStore = require('./sessionstore');
 var config = require('./config');
 const Preset = require('./tools/databasePresetBuilder');
 var databasePreset = new Preset();
-var sessionStore = require('./sessionStore');
+var sessionStore = require('./sessionstore');
 // DEFINE ROUTERS
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
