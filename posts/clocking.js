@@ -8,6 +8,7 @@ var connection = require('../connectPostgres');
 
 app.post('/clocking/:id', async function (req, res) {
   var passingVar = req.params.id;
+  console.log('hello' + req.params.id);
   let check = await checkStatus.checkStatus(
     req.session.username
   );
@@ -21,7 +22,7 @@ app.post('/clocking/:id', async function (req, res) {
       if (check.clockedin == 0) {
         console.log('not clocked in, clocking in!...');
         clocking.clockIn(req.session.username);
-        clockin = 'Successfully clocked in!';
+        clockIn = 'Successfully clocked in!';
       } else {
         clockIn = 'Already clocked in!!';
         console.log('Already clocked in, ignoring.');
@@ -37,20 +38,20 @@ app.post('/clocking/:id', async function (req, res) {
       break;
     case 'clockout':
       if (check.clockedin == 0) {
-        clockin = 'Already clocked out.';
+        clockIn = 'Already clocked out.';
       } else {
         clocking.clockOut(req.session.username);
-        clockin = 'Successfully clocked out';
+        clockIn = 'Successfully clocked out';
       }
       break;
   }
   console.log('please dont...');
   connection.query(
-    'SELECT * FROM projects WHERE username = ?',
+    'SELECT * FROM projects WHERE username = $1',
     [req.session.username],
     function (err, results, fields) {
       // console.log(results);
-      var response = results;
+      var response = results.rows;
       // console.log(response);
       console.log('connected as id ' + connection.threadId);
       res.render('app', {
@@ -60,6 +61,7 @@ app.post('/clocking/:id', async function (req, res) {
         tableData: response,
         clockin: clockIn,
         onlunch: onLunch,
+        currentPage: 'App Panel',
       });
     }
   );

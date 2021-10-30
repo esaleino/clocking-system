@@ -23,7 +23,13 @@ window.addRowHandlers = () => {
           // var task = cell2.innerHTML;
           // var time = cell3.innerHTML;
           // var notes = cell4.innerHTML;
-          fillForm(id, task, time, notes);
+
+          fillForm(
+            row.cells[0].innerHTML,
+            row.cells[1].innerHTML,
+            row.cells[2].innerHTML,
+            row.cells[3].innerHTML
+          );
         }
         lastRow = row;
       };
@@ -34,7 +40,8 @@ window.addRowHandlers = () => {
 
 function fillForm(id, task, time, notes) {
   console.log(id, task, time, notes);
-  document.getElementById('identifier').value = parseInt(id);
+  document.getElementById('identifier').value =
+    parseInt(id);
   document.getElementById('task').value = task;
   document.getElementById('time').value = Number(time);
   document.getElementById('notes').value = notes;

@@ -24,11 +24,12 @@ router.use(
       var variables = await checkStatus.populate(check);
       console.log(variables);
       connection.query(
-        'SELECT * FROM projects WHERE username = ?',
+        'SELECT * FROM projects WHERE username = $1',
         [req.session.username],
         function (err, results, fields) {
           // console.log(results);
-          var response = results;
+          console.log(results.rows);
+          var response = results.rows;
           // console.log(response);
           console.log(
             'connected as id ' + connection.threadId
@@ -47,12 +48,7 @@ router.use(
     } else if (req.session.username == 'admin') {
       res.redirect('../admin');
     } else {
-      res.render('login', {
-        status: 'Not logged in, please login first',
-        title: 'Login page',
-        loggedinUser: 'Not logged in',
-        currentPage: 'Login Panel',
-      });
+      res.redirect('../login');
     }
   }
 );

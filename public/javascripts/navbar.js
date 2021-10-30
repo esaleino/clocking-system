@@ -1,5 +1,4 @@
 window.navbarChange = async () => {
-  console.log('hello??');
   let dropdown1st = document.getElementById('loginRef');
   let dropdown2nd = document.getElementById('registerRef');
   let appLink = document.getElementById('toApp');

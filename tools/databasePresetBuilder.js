@@ -165,7 +165,6 @@ class Preset {
   }
   fillTemplate() {
     var self = this;
-    console.log('hello you should be here?');
     console.time('fillTemplate');
     var promise = new Promise(function (resolve, reject) {
       connection.query(

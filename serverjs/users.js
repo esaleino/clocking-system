@@ -6,7 +6,7 @@ var makePerson = `INSERT INTO persons
                   ( username, FirstName, LastName, 
                   groupName) VALUES ($1,$2,$3,$4, 
                   (SELECT groupName FROM workgroups 
-                  WHERE groupAuthKey = ?))ON CONFLICT DO NOTHING;`;
+                  WHERE groupAuthKey = $5))ON CONFLICT DO NOTHING;`;
 
 var buildAccount = `INSERT INTO accounts(username, password, email, validated, forgotpassword, changepassword) VALUES ($1,$2,$3,$4,$5,$6)ON CONFLICT DO NOTHING;`;
 var buildPerson = `INSERT INTO persons(id, username, FirstName, LastName, groupName) VALUES ($1,$2,$3,$4, (SELECT groupName FROM workgroups WHERE groupAuthKey = $5))ON CONFLICT DO NOTHING;`;

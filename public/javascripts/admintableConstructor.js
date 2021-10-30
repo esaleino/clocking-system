@@ -19,14 +19,15 @@ var form = `<form method="POST" action="../modifyuser">
           <input id="lname" name="lastname" class="form-control mb-2" />
         </div>
         <div class="col-sm-3">
-          <p class="mb-2">GROUP NAME</p>
-          <input id="gname" name="groupname" class="form-control mb-2" />
-          <p class="mb-2">FORGOT PASSWORD</p>
+        <p class="mb-2">FORGOT PASSWORD</p>
           <input
             id="fpassword"
             name="forgotpassword"
             class="form-control mb-2"
           />
+          <p class="mb-2">GROUP NAME</p>
+          <input id="gname" name="groupname" class="form-control mb-2" />
+          
         </div>
       </div>
     </div>
@@ -44,7 +45,10 @@ window.admintableConstruct = async (getResults) => {
   var tr = '<tr>';
   for (var i = 0; i < dataKeys.length; i++) {
     console.log(i);
-    tr += '<th class="th-sm">' + dataKeys[i].toUpperCase() + '</th>';
+    tr +=
+      '<th class="th-sm">' +
+      dataKeys[i].toUpperCase() +
+      '</th>';
   }
   if (currentSection == 'userverification') {
     tr += '<th class="th-sm">VALIDATE</th>';
@@ -90,8 +94,8 @@ window.admintableConstruct = async (getResults) => {
   } else if (currentSection == 'userverification') {
     document.getElementById('form').innerHTML = '';
   }
-  await formatTable();
   await addAdminRowHandlers();
+  await formatTable();
 };
 
 function formatTable() {

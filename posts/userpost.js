@@ -10,8 +10,10 @@ app.post('/userpost', (req, res) => {
   var hours = parseInt(req.body.hours);
   var info = req.body.info;
   var id = parseInt(req.body.id);
+  console.log(
+    `${username} + ${project} + ${hours} + ${info} + ${id}`
+  );
   console.log(req.session.username + 'Hello me');
-  console.log(id, username, project, hours, info);
   console.log('Verifying user login...');
   // When adding new data ID value is not specified - when parsed = NaN
   // Checks for login, also checks that logged in user and the data being input is applied to the same user
@@ -24,7 +26,7 @@ app.post('/userpost', (req, res) => {
       console.log('Not modifying pre-existing data...');
       // Query database and insert user input values
       connection.query(
-        'INSERT INTO projects (username, hours, project, info) VALUES (?, ?, ?, ?)',
+        'INSERT INTO projects (username, hours, project, info) VALUES ($1, $2, $3, $4)',
         [username, hours, project, info],
         function (fields, results, error) {
           console.log(results);
@@ -44,14 +46,14 @@ app.post('/userpost', (req, res) => {
       ) {
         // Query to database where ID and password match
         connection.query(
-          'SELECT username FROM projects WHERE id = ? AND username = ?',
+          'SELECT username FROM projects WHERE id = $1 AND username = $2',
           [id, req.session.username],
           function (error, result, fields) {
             // If query returns results, the field is being edited by correct user
-            if (result.length > 0) {
+            if (result.rowCount > 0) {
               console.log('Everything is okay my friend!');
               // Resolves the promise for username in query result
-              resolve(result[0].username);
+              resolve(result.rows[0].username);
             } else {
               // If no results return, user is attemping to edit a field not belonging to said user - Reject promise
               reject();
@@ -66,7 +68,7 @@ app.post('/userpost', (req, res) => {
           console.log('Modifying pre-existing data...');
           // Query for updating user input data in to the database
           connection.query(
-            'UPDATE projects SET hours = ?, project = ?, info = ? WHERE id = ?',
+            'UPDATE projects SET hours = $1, project = $2, info = $3 WHERE id = $4',
             [hours, project, info, id],
             function (error, results, fields) {
               console.log(results);

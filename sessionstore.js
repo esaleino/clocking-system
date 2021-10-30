@@ -1,5 +1,4 @@
 var session = require('express-session');
-const config = require('./config');
 var pg = require('pg');
 var pgSession = require('express-pg-session')(session);
 
@@ -10,9 +9,9 @@ var pgPool = new pg.Pool({
   password: process.env.database_password,
   database: process.env.database_name,
   clearExpired: true,
-  ssl: {
+  /* ssl: {
     rejectUnauthorized: false,
-  },
+  }, */
 });
 
 let columnNames = {

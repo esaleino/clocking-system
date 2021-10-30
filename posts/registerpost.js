@@ -22,7 +22,7 @@ app.post('/registerpost', function (req, res) {
     // userCheck promise for making a database check for existing username
     var userCheck = new Promise(function (resolve, reject) {
       connection.query(
-        'SELECT * FROM accounts WHERE username = ?',
+        'SELECT * FROM accounts WHERE username = $1',
         [username],
         function (error, results, fields) {
           // IF statement for result data

@@ -7,9 +7,15 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 const logErrors = require('express-log-errors');
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+  throw result.error;
+}
+console.log(result.parsed);
 //require("./telegrambot/telegrambot");
 var sessionStore = require('./sessionstore');
-var config = require('./config');
+/* var config = require('./config'); */
 const Preset = require('./tools/databasePresetBuilder');
 var databasePreset = new Preset();
 var sessionStore = require('./sessionstore');
@@ -89,7 +95,7 @@ app.use('', clockingPost);
 app.use('', adminGet);
 // app.use('', testPost);
 
-if (process.env.run_builder) {
+if (process.env.run_builder == true) {
   databasePreset.presetBuilder();
 }
 

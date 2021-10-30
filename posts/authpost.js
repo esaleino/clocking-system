@@ -54,7 +54,6 @@ app.post('/authpost', function (req, res) {
                 req.body.username,
                 req.session.id
               );
-              console.log('im here maybe' + username);
               if (username == 'admin') {
                 req.session.loggedin = true;
                 req.session.username = username;
