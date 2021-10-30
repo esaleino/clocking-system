@@ -11,8 +11,8 @@ const logErrors = require('express-log-errors');
 const result = dotenv.config();
 if (result.error) {
   throw result.error;
-} */
-console.log(result.parsed);
+}
+console.log(result.parsed); */
 //require("./telegrambot/telegrambot");
 var sessionStore = require('./sessionstore');
 /* var config = require('./config'); */
