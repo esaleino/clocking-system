@@ -5,9 +5,9 @@ const connection = new Pool({
   database: process.env.database_name,
   password: process.env.database_password,
   port: process.env.database_port,
-  /* ssl: {
+  ssl: {
     rejectUnauthorized: false,
-  }, */
+  },
 });
 
 /* connection.query('SELECT * FROM accounts', (err, res) => {
