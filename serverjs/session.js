@@ -1,5 +1,5 @@
 const connection = require('../connectPostgres');
-const sessionStore = require('../sessionstore');
+/* const sessionStore = require('../sessionstore'); */
 
 // class SessionCheck {
 //   findUser(request) {
@@ -67,7 +67,7 @@ class SessionCheck {
     var userChecked = false;
     let promise = new Promise(function (resolve, reject) {
       connection.query(
-        'SELECT data, session_id FROM sessions',
+        'SELECT sess, sid FROM sessions',
         function (error, results) {
           console.log(results);
           if (results.rowCount > 0) {
