@@ -9,9 +9,9 @@ var pgPool = new pg.Pool({
   password: process.env.database_password,
   database: process.env.database_name,
   clearExpired: true,
-  ssl: {
+  /* ssl: {
     rejectUnauthorized: false,
-  },
+  }, */
 });
 
 let columnNames = {

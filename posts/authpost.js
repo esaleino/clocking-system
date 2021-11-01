@@ -1,11 +1,9 @@
 var express = require('express');
 var app = express();
 var connection = require('../connectPostgres');
-require('../sessionstore');
 const SessionCheck = require('../serverjs/session');
 var sessionCheck = new SessionCheck();
 var bcrypt = require('bcrypt');
-const sessionStore = require('../sessionstore');
 
 // POST login authentication
 app.post('/authpost', function (req, res) {
@@ -99,11 +97,6 @@ app.post('/authpost', function (req, res) {
               console.log(reject);
               res.redirect('/login');
             });
-          if (success) {
-            // do success
-          } else {
-            // do fail
-          }
         }
       }
     );
@@ -114,5 +107,37 @@ app.post('/authpost', function (req, res) {
     res.end();
   }
 });
+async function login(username, password) {
+  var returnvalue = await checkValidation(username);
+  console.log(returnvalue);
+  return returnvalue;
+}
 
-module.exports = app;
+function checkValidation(username) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      'SELECT validated FROM accounts WHERE username = $1',
+      [username],
+      (err, res) => {
+        if (err) {
+          reject(err);
+        } else resolve(res);
+      }
+    );
+  })
+    .then((res) => {
+      let validated;
+      if (res.rows[0].validated == 1) {
+        validated = true;
+      } else {
+        validated = false;
+      }
+      return validated;
+    })
+    .catch((err) => {
+      console.log('hello reject' + res);
+      return err;
+    });
+}
+
+module.exports = { app, login, checkValidation };

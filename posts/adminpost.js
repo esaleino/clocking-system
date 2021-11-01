@@ -2,19 +2,16 @@ var express = require('express');
 var app = express();
 var connection = require('../connectPostgres');
 const adminQuery = require('../serverjs/queryvars');
-const sessionStore = require('../sessionstore');
-var error = {};
-error.loggedIn;
 
 app.post('/admin/userVerify', function (req, res) {
   if (req.session.username == 'admin') {
-    var promise = new Promise(function (resolve, reject) {
+    var promise = new Promise((resolve, reject) => {
       connection.query(
         adminQuery.userVerify,
         [req.body.username],
-        function (error, results) {
-          if (error) {
-            reject(error);
+        function (err, results) {
+          if (err) {
+            reject(err);
           } else {
             resolve('verified user');
           }
@@ -40,9 +37,9 @@ app.post('/admin/userRemove', function (req, res) {
       connection.query(
         adminQuery.userRemove,
         [req.body.username],
-        function (error, results) {
-          if (error) {
-            reject(error);
+        function (err, results) {
+          if (err) {
+            reject(err);
           } else {
             resolve('removed user');
           }
