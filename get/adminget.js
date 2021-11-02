@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var connection = require('../connectPostgres');
 const adminQuery = require('../serverjs/queryvars');
-const sessionStore = require('../sessionstore');
+/* const sessionStore = require('../sessionstore'); */
 var error = {};
 error.loggedIn;
 
@@ -12,7 +12,7 @@ app.get('/admin/getUsers', function (req, res) {
     connection.query(
       adminQuery.getUsers,
       function (error, results) {
-        console.log(sessionStore);
+        req.session.save();
         return res.send(results.rows);
       }
     );

@@ -1,6 +1,6 @@
 var express = require('express');
 const connection = require('../connectPostgres');
-const sessionStore = require('../sessionstore');
+/* const sessionStore = require('../sessionstore'); */
 var router = express.Router();
 
 /* GET home page. */
@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
       currentPage: 'Admin panel',
     });
   } else {
-    sessionStore.destroy(req.session.id);
+    /* sessionStore.destroy(req.session.id); */
     res.redirect('../login');
   }
 });

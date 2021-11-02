@@ -1,6 +1,6 @@
 var express = require('express');
 const session = require('express-session');
-const sessionStore = require('../sessionstore');
+/* const sessionStore = require('../sessionstore'); */
 var router = express.Router();
 
 /* GET home page. */

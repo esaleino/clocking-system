@@ -4,6 +4,7 @@ var connection = require('../connectPostgres');
 const SessionCheck = require('../serverjs/session');
 var sessionCheck = new SessionCheck();
 var bcrypt = require('bcrypt');
+var hash = require('../serverjs/hashing');
 
 // POST login authentication
 app.post('/authpost', function (req, res) {
@@ -25,43 +26,30 @@ app.post('/authpost', function (req, res) {
           results.rows[0].validated;
           var hash = results.rows[0].password;
           console.log('hello world + ' + hash);
-          var hashing = new Promise(function (
-            resolve,
-            reject
-          ) {
-            bcrypt.compare(
-              password,
-              hash,
-              function (err, res) {
-                if (res) {
-                  console.log('Password correct!');
-                  success = true;
-                  resolve(success);
-                } else {
-                  console.log('Incorrect password.');
-                  success = false;
-                  reject(success);
-                }
+          var hashing = new Promise(function (resolve, reject) {
+            bcrypt.compare(password, hash, function (err, res) {
+              if (res) {
+                console.log('Password correct!');
+                success = true;
+                resolve(success);
+              } else {
+                console.log('Incorrect password.');
+                success = false;
+                reject(success);
               }
-            );
+            });
           });
           hashing
             .then(function (resolve) {
               console.log(resolve);
-              sessionCheck.checkForSession(
-                req.body.username,
-                req.session.id
-              );
+              sessionCheck.checkForSession(req.body.username, req.session.id);
               if (username == 'admin') {
                 req.session.loggedin = true;
                 req.session.username = username;
                 console.log(req.session.username);
                 res.redirect('/admin');
               } else {
-                var validation = new Promise(function (
-                  resolve,
-                  reject
-                ) {
+                var validation = new Promise(function (resolve, reject) {
                   connection.query(
                     'SELECT validated FROM accounts WHERE username = $1 AND validated = 1',
                     [username],
@@ -82,9 +70,7 @@ app.post('/authpost', function (req, res) {
                     req.session.username = username;
                     console.log(resolve);
                     console.log('Validated user.');
-                    res.redirect(
-                      '/app/' + req.session.username
-                    );
+                    res.redirect('/app/' + req.session.username);
                   })
                   .catch(async function (reject) {
                     console.log(reject);
@@ -108,9 +94,24 @@ app.post('/authpost', function (req, res) {
   }
 });
 async function login(username, password) {
-  var returnvalue = await checkValidation(username);
-  console.log(returnvalue);
-  return returnvalue;
+  return checkValidation(username)
+    .then((validationResult) => {
+      if (validationResult === true) {
+        return hash
+          .checkPassword(password, username)
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            throw new Error('Error: hash error');
+          });
+      } else if (typeof validationResult === 'string') {
+        return validationResult;
+      }
+    })
+    .catch((e) => {
+      throw new Error(e);
+    });
 }
 
 function checkValidation(username) {
@@ -126,17 +127,14 @@ function checkValidation(username) {
     );
   })
     .then((res) => {
-      let validated;
       if (res.rows[0].validated == 1) {
-        validated = true;
+        return true;
       } else {
-        validated = false;
+        return 'User not validated';
       }
-      return validated;
     })
     .catch((err) => {
-      console.log('hello reject' + res);
-      return err;
+      return 'User not found';
     });
 }
 

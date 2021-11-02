@@ -14,7 +14,9 @@ if (result.error) {
 }
 console.log(result.parsed);
 //require("./telegrambot/telegrambot");
-var sessionStore = require('./sessionstore');
+/* var sessionStore = require('./sessionstore'); */
+var connection = require('./connectPostgres');
+const pgSession = require('connect-pg-simple')(session);
 
 const Preset = require('./tools/databasePresetBuilder');
 var databasePreset = new Preset();
@@ -32,7 +34,7 @@ var logoutRouter = require('./routes/logout');
 
 // DEFINE POSTS
 var registerPost = require('./posts/registerpost');
-var authPost = require('./posts/authpost');
+var authPost = require('./posts/authpost').app;
 var userPost = require('./posts/userpost');
 var clockingPost = require('./posts/clocking');
 var adminPost = require('./posts/adminpost');
@@ -52,9 +54,14 @@ app.use(
   session({
     key: 'session_cookie_name',
     secret: 'session_cookie_secret',
-    store: sessionStore.sessionStore,
+    store: new pgSession({
+      pool: connection,
+      createTableIfMissing: true,
+      tableName: 'sessions', // Use another table-name than the default "session" one
+      // Insert connect-pg-simple options here
+    }),
     resave: false,
-    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    cookie: { maxAge: 1 * 8 * 60 * 60 * 1000 },
     saveUninitialized: false,
   })
 );
@@ -94,9 +101,11 @@ app.use('', clockingPost);
 // Use GET
 app.use('', adminGet);
 // app.use('', testPost);
-
-if (process.env.run_builder == true) {
+console.log(process.env.run_builder);
+if (process.env.run_builder) {
   databasePreset.presetBuilder();
+} else {
+  console.log('builder not set to run');
 }
 
 // catch 404 and forward to error handler

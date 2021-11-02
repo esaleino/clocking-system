@@ -41,7 +41,7 @@ var createGroups = `CREATE TABLE IF NOT EXISTS workgroups
                     );`;
 var createSessions = `CREATE TABLE IF NOT EXISTS sessions (
                     session_id varchar(128) NOT NULL,
-                    expires int check (expires > 0) NOT NULL,
+                    expires timestamp with time zone NOT NULL,
                     data text DEFAULT NULL,
                     PRIMARY KEY (session_id)
                     );`;

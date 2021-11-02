@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var sessionStore = require('../sessionstore');
+/* var sessionStore = require('../sessionstore'); */
 var session = require('express-session');
 var ViewsCounter = require('../serverjs/viewcounter.js');
 var viewsCounter = new ViewsCounter();
@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
   viewsCounter.doViews(req.socket.remoteAddress);
   //console.log(session.username);
   //console.log(req.session.username);
-  console.log(req.session);
+
   if (req.session.loggedin) {
     currentUser = req.session.username;
   } else {
