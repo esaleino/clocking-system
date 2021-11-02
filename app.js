@@ -102,7 +102,7 @@ app.use('', clockingPost);
 app.use('', adminGet);
 // app.use('', testPost);
 console.log(process.env.run_builder);
-if (process.env.run_builder) {
+if (process.env.run_builder == 'true') {
   databasePreset.presetBuilder();
 } else {
   console.log('builder not set to run');
@@ -117,8 +117,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error =
-    req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   console.log(err.status);
