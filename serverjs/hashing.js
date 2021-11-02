@@ -15,13 +15,12 @@ function checkPassword(raw, username) {
           if (err) {
             reject(err.message);
           } else {
-            console.log(resCrypt);
             resolve(resCrypt);
           }
         });
       })
       .catch((e) => {
-        throw new Error('Error: user not found');
+        reject('Error: user not found');
       });
   })
     .then((resolve) => {
