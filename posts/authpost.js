@@ -14,8 +14,6 @@ app.post('/authpost', function (req, res) {
   // Verifying both fields are filled
   login(username, password)
     .then((loginResult) => {
-      /* 
-      console.error('the result of this login request is: ' + loginResult); */
       if (loginResult === true) {
         // login successful - logging in
         req.session.loggedin = true;
