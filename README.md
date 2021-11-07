@@ -1,4 +1,6 @@
-# DemoProject <!-- omit in toc -->
+# Clocking-system <!-- omit in toc -->
+
+# Live website in [heroku]
 
 # Table of Contents <!-- omit in toc -->
 
@@ -78,7 +80,7 @@ This demo project uses the following open source projects:
 - Any local MySQL server, tutorial will use [xampp]
 - A text editor of your choice, tutorial will use [vscode]
 - _optional_ A database viewer, like [mysql-workbench]
-- *optional* [git] installed for cloning the repo, you can also download the main branch from the github page but the tutorial will follow with terminal instructions
+- _optional_ [git] installed for cloning the repo, you can also download the main branch from the github page but the tutorial will follow with terminal instructions
 
 # 3. Installation tutorial
 
@@ -92,8 +94,8 @@ In this step we will prepare the local repository, if you are familiar with git 
 
 ![mkdir](/docs/images/mkdir.png)
 
-Make a new folder with any name, this tutorial will use demo with the command: <br> 
-`mkdir demo` <br> 
+Make a new folder with any name, this tutorial will use demo with the command: <br>
+`mkdir demo` <br>
 and then open that folder with: <br>
 `cd demo/`
 
@@ -139,14 +141,13 @@ Click on the marked start button to start your MySQL server, you can also start 
 
 ![mysqlworkbench](/docs/images/mysqlworkbench.png)
 
-MySQL Workbench should automatically find your running MySQL server and you can connect to it by clicking the on the local instance. If MySQL Workbench gives you a warning about database versions, click on `Continue Anyway` to continue. If you were successful, you should have a new tab open for your connection, if not go try manual connection. 
+MySQL Workbench should automatically find your running MySQL server and you can connect to it by clicking the on the local instance. If MySQL Workbench gives you a warning about database versions, click on `Continue Anyway` to continue. If you were successful, you should have a new tab open for your connection, if not go try manual connection.
 
 ##### 3.2.3.1.1. Manually add connection with MySQL workbench
 
 If you were successful in the previous step, you can skip to [3.2.4.1. With MySQL Workbench](#3241-with-mysql-workbench)
 
-If MySQL Workbench didn't find the connection automatically, select `database -> manage connections` from the top menu. The following should appear: 
-
+If MySQL Workbench didn't find the connection automatically, select `database -> manage connections` from the top menu. The following should appear:
 
 ![manualconnection](/docs/images/manualconnection.png)
 
@@ -158,7 +159,7 @@ From the bottom left, click new to make a new connection and then configure the 
 `Password`: By default there is no password, but if you have set one then enter that password<br>
 Now click on the `Test Connection` button at the bottom right, if you get a warning in this step just click `Continue anyways`. You should now have a successful connection set up and you can close this window. <br>
 <br>
-You should see the following in the main panel now: 
+You should see the following in the main panel now:
 
 ![newconnection](/docs/images/newconnection.png)
 
@@ -170,14 +171,15 @@ WIP
 
 ### 3.2.4. Creating a new schema
 
-In this step we will create a new schema for our web application to use for its data storage. 
+In this step we will create a new schema for our web application to use for its data storage.
+
 #### 3.2.4.1. With MySQL Workbench
 
-After successfully connecting to the database, you will see a `Navigator` section on the left side. 
+After successfully connecting to the database, you will see a `Navigator` section on the left side.
 
 ![navigator](/docs/images/navigator.png)
 
-If yours looks like above, then you will have to click the `Schemas` on the bottom right to enter the `Schemas` view. 
+If yours looks like above, then you will have to click the `Schemas` on the bottom right to enter the `Schemas` view.
 
 ![navigatorschemas](/docs/images/navigatorschema.png)
 
@@ -195,7 +197,7 @@ Now that our MySQL server is running and tested, and we have a schema made, we c
 
 ### 3.3.1. Configuration
 
-First, we will be going to the root directory of our repository, in the root directory you will find a file called `config.sample.js`, remove the .sample part of this filename so it will be as follows: `config.js`. Open the configuration file in your text editor and you will see the following configurations: 
+First, we will be going to the root directory of our repository, in the root directory you will find a file called `config.sample.js`, remove the .sample part of this filename so it will be as follows: `config.js`. Open the configuration file in your text editor and you will see the following configurations:
 
 ![configjs](/docs/images/configjs.png)
 
@@ -217,9 +219,9 @@ The port your MySQL server is running on, leave on default `3306` unless you cha
 `config.runBuilder`<br>
 This will run a preset builder to populate our schema with preset tables and populate them with template data. Leave on true for first startup.
 
-### 3.3.2. First startup 
+### 3.3.2. First startup
 
-Now we will have to go back to the terminal and change to our root directory and run the following command `npm start`: 
+Now we will have to go back to the terminal and change to our root directory and run the following command `npm start`:
 
 ![npmstart](/docs/images/npmstart.png)
 
@@ -232,7 +234,7 @@ You can register a new account at `127.0.0.1:3000/register`
 
 **IMPORTANT: CURRENTLY THERE IS NO TEMPLATE FOR USERS, MAKE AN ADMIN ACCOUNT FIRST WITH THE ACCOUNT NAME `admin` TO ACCESS THE ADMIN PANEL!!**
 
-After registering successfully, the web app will redirect you to the login page. If you go in to the database viewer you can see all the template tables that were made, the user account information is saved in both the `accounts` table that has the username, hashed password, email, and a state for validation, and the `persons` table that holds additional information about the user. Currently there is no way to change user information inside the web app and it has to be done manually with a query to activate the account, admin account can login without being validated. <br>*check [4.1.1. Account updating examples](#411-account-updating-examples) for additional information*
+After registering successfully, the web app will redirect you to the login page. If you go in to the database viewer you can see all the template tables that were made, the user account information is saved in both the `accounts` table that has the username, hashed password, email, and a state for validation, and the `persons` table that holds additional information about the user. Currently there is no way to change user information inside the web app and it has to be done manually with a query to activate the account, admin account can login without being validated. <br>_check [4.1.1. Account updating examples](#411-account-updating-examples) for additional information_
 
 # 4. Related queries
 
@@ -242,61 +244,64 @@ Here are some project related queries you can use in MySQL Workbench by opening 
 
 Account related queries
 
-### 4.1.1. Account updating examples 
-
+### 4.1.1. Account updating examples
 
 **IMPORTANT: DON'T CHANGE PASSWORDS OR CREATE NEW ACCOUNTS THROUGH WORKBENCH - MAKE THE ACCOUNTS THROUGH THE WEB APP ITSELF AS IT USES `bcrypt` FOR PASSWORD HASHING SO PLAIN TEXT PASSWORDS WILL NOT WORK!!**
 
 <br> Shows all unvalidated accounts in the database:
 
 ```SQL
-SELECT * FROM accounts 
+SELECT * FROM accounts
 WHERE validated = 0;
 ```
+
 <br>Query that validates accounts by username, Replace `'username'` with the account you wish to validate:
 
 ```SQL
-UPDATE accounts 
-SET validated = '1' 
+UPDATE accounts
+SET validated = '1'
 WHERE username = 'username';
 ```
- <br>... Or to validate all existing accounts use: 
+
+<br>... Or to validate all existing accounts use:
 
 ```SQL
-UPDATE accounts 
+UPDATE accounts
 SET validated = '1';
 ```
+
 **THIS DOES NOT WORK WITH MYSQL WORKBENCH SAFE MODE ENABLED - TO DISABLE SAFE MODE GO TO `Edit - preferences - SQL editor` AND UNTICK SAFE MODE AT THE BOTTOM AND RECONNECT TO THE DATABASE WITHOUT CLOSING THE APPLICATION** <br> <br>
 Alternatively without disabling safe mode, you may use: <br>
 
 ```SQL
-UPDATE accounts 
-SET validated = '1' 
+UPDATE accounts
+SET validated = '1'
 WHERE username != null;
 ```
+
 This will update all accounts in the table to be validated. <br>
 
 ### 4.1.2. Account deletion examples
 
 First, select accounts from the table with: <br>
+
 ```SQL
-SELECT * 
-FROM accounts 
+SELECT *
+FROM accounts
 ```
+
 <br>
 This will show all the accounts in the database. Next, to delete you simply run: <br>
 
 ```SQL
-DELETE accounts, persons 
-FROM accounts 
-INNER JOIN persons 
+DELETE accounts, persons
+FROM accounts
+INNER JOIN persons
 ON persons.username = accounts.username
 WHERE accounts.username = 'test';
 ```
+
 Note that this will also remove the account related information from the persons table.
-
-
-
 
 [node.js]: http://nodejs.org
 [express]: http://expressjs.com
@@ -310,3 +315,4 @@ Note that this will also remove the account related information from the persons
 [xampp]: https://www.apachefriends.org/index.html
 [mysql-workbench]: https://dev.mysql.com/downloads/workbench/
 [vscode]: https://code.visualstudio.com/
+[heroku]: https://boiling-shelf-86974.herokuapp.com/
