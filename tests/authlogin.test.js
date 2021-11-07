@@ -1,8 +1,3 @@
-const dotenv = require('dotenv');
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-}
 const connection = require('../connectPostgres');
 var auth = require('../posts/authpost');
 var hash = require('../serverjs/hashing');
@@ -97,6 +92,7 @@ test('full login test with missinguser/randompass expecting user not found', asy
 });
 
 afterAll((done) => {
+  connection.query('');
   connection.end(() => {
     console.log('pool has ended');
   });

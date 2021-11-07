@@ -39,12 +39,6 @@ var createGroups = `CREATE TABLE IF NOT EXISTS workgroups
                     groupProject varchar(255) NOT NULL,
                     CONSTRAINT unique_groupAuthKey UNIQUE (groupAuthKey)
                     );`;
-var createSessions = `CREATE TABLE IF NOT EXISTS sessions (
-                    session_id varchar(128) NOT NULL,
-                    expires timestamp with time zone NOT NULL,
-                    data text DEFAULT NULL,
-                    PRIMARY KEY (session_id)
-                    );`;
 var createHours = `CREATE TABLE IF NOT EXISTS hours
                   (id SERIAL PRIMARY KEY, 
                   username varchar(255),
@@ -80,9 +74,7 @@ var insertGroups = {
           VALUES ('testGroup3', 'fgzRHVuemP', 
           'testProject3')ON CONFLICT DO NOTHING;`,
 };
-var users = JSON.parse(
-  fs.readFileSync('./tools/namelist.json', 'utf8')
-);
+var users = JSON.parse(fs.readFileSync('./tools/namelist.json', 'utf8'));
 // users[0] = {
 //   firstname: 'Root',
 //   lastname: 'Toor',
@@ -156,9 +148,7 @@ class Preset {
       })
       .catch(function (reject) {
         console.log(
-          'We have: ' +
-            reject +
-            ' warnings. Probably already built. stopping.'
+          'We have: ' + reject + ' warnings. Probably already built. stopping.'
         );
         return;
       });
@@ -190,9 +180,7 @@ class Preset {
       })
       .catch(function (reject) {
         console.log(
-          'We have: ' +
-            reject +
-            ' warnings. Probably already built. stopping.'
+          'We have: ' + reject + ' warnings. Probably already built. stopping.'
         );
         return;
       });
@@ -204,15 +192,9 @@ class Preset {
     for (var i = 0; i < usersKeys.length; i++) {
       var currentUser = users[i];
       var salt = bcrypt.genSaltSync(saltRounds);
-      var hash = bcrypt.hashSync(
-        currentUser.password,
-        salt
-      );
+      var hash = bcrypt.hashSync(currentUser.password, salt);
       console.log(
-        'Creating user: ' +
-          currentUser.username +
-          ' with hash: ' +
-          hash
+        'Creating user: ' + currentUser.username + ' with hash: ' + hash
       );
       createUsers.registerBuilder(hash, currentUser);
     }
@@ -221,30 +203,19 @@ class Preset {
     //self.writeConfig();
   }
   writeConfig() {
-    fs.readFile(
-      '../config.js',
-      'utf8',
-      function (err, data) {
-        if (err) {
-          return console.log(err);
-        }
-        var result = data.replace(
-          /config.runBuilder = true/g,
-          'config.runBuilder = false'
-        );
-        fs.writeFile(
-          './config.js',
-          result,
-          'utf8',
-          function (err) {
-            if (err) return console.log(err);
-          }
-        );
-        return console.log(
-          'Changed config.runBuilder to false'
-        );
+    fs.readFile('../config.js', 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
       }
-    );
+      var result = data.replace(
+        /config.runBuilder = true/g,
+        'config.runBuilder = false'
+      );
+      fs.writeFile('./config.js', result, 'utf8', function (err) {
+        if (err) return console.log(err);
+      });
+      return console.log('Changed config.runBuilder to false');
+    });
   }
 }
 

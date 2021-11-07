@@ -60,4 +60,20 @@ app.post('/admin/userRemove', function (req, res) {
   }
 });
 
-module.exports = app;
+function validate(loggedInUser, userToValidate) {
+  return new Promise((resolve, reject) => {
+    if (loggedInUser == 'admin') {
+      resolve('User validated');
+    } else {
+      reject('not admin');
+    }
+  })
+    .then((resolve) => {
+      return resolve;
+    })
+    .catch((reject) => {
+      return reject;
+    });
+}
+
+module.exports = { app, validate };
