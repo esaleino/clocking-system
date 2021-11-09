@@ -44,19 +44,14 @@ app.post('/registerpost', function (req, res) {
     userCheck
       .then(function () {
         bcrypt.genSalt(saltRounds, (err, salt) => {
-          bcrypt.hash(
-            req.body.password,
-            salt,
-            (err, hash) => {
-              console.log(hash);
-              users.registerUser(hash, req.body);
-            }
-          );
+          bcrypt.hash(req.body.password, salt, (err, hash) => {
+            console.log(hash);
+            users.registerUser(hash, req.body);
+          });
           res.redirect('../login');
         });
       })
       .catch(function () {
-        // When promise is rejected, move to catch block
         // Encode error message for sending it to register router
         var errormessage = encodeURIComponent('falseuser');
         console.log(decodeURIComponent(errormessage));
@@ -66,4 +61,10 @@ app.post('/registerpost', function (req, res) {
   }
 });
 
-module.exports = app;
+function checkUser(username, email) {
+  return new Promise((reject, resolve) => {
+    connection.query('');
+  });
+}
+
+module.exports = { app };

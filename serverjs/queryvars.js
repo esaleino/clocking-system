@@ -19,11 +19,7 @@ adminQuery.getUnverified = `SELECT persons.username, accounts.email,
 adminQuery.userVerify = `UPDATE accounts 
                         SET validated = 1 
                         WHERE username = $1;`;
-adminQuery.userUnverify = `UPDATE accounts 
-                          SET validated = 0 
-                          WHERE username = $1;`;
 adminQuery.userRemove = `DELETE FROM accounts
-                        WHERE accounts.username = $1; DELETE FROM persons
-                        WHERE persons.username = $1;`;
+                        WHERE accounts.username = $1;`;
 
 module.exports = adminQuery;

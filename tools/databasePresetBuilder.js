@@ -7,8 +7,8 @@ var fs = require('fs');
 const e = require('express');
 
 var createAccounts = `CREATE TABLE IF NOT EXISTS accounts 
-                    (id SERIAL PRIMARY KEY,
-                    username varchar(50) NOT NULL, 
+                    (id SERIAL,
+                    username varchar(50) NOT NULL PRIMARY KEY, 
                     password varchar(255) NOT NULL, 
                     email varchar(100) NOT NULL, 
                     validated smallint NOT NULL, 
@@ -18,7 +18,7 @@ var createAccounts = `CREATE TABLE IF NOT EXISTS accounts
                     );`;
 var createPersons = `CREATE TABLE IF NOT EXISTS persons 
                     (id int NOT NULL PRIMARY KEY,
-                    username varchar(255) NOT NULL,
+                    username varchar(50) NOT NULL REFERENCES accounts ON DELETE CASCADE,
                     LastName varchar(255) DEFAULT 'not set',
                     FirstName varchar(255) DEFAULT 'not set',
                     groupName varchar(255) DEFAULT 'not set',
@@ -75,46 +75,6 @@ var insertGroups = {
           'testProject3')ON CONFLICT DO NOTHING;`,
 };
 var users = JSON.parse(fs.readFileSync('./tools/namelist.json', 'utf8'));
-// users[0] = {
-//   firstname: 'Root',
-//   lastname: 'Toor',
-//   authkey: '_^s8Cp$6Z.EfrYh(rbm>y)>W%NJMnH',
-//   username: 'admin',
-//   password: 'roottoor',
-//   email: 'admin@rootmail.toor',
-//   forgotpassword: '0',
-//   changepassword: '0',
-// };
-// users[1] = {
-//   firstname: 'John',
-//   lastname: 'Doe',
-//   authkey: 'VT5dTmifyE',
-//   username: 'john',
-//   password: 'john',
-//   email: 'john@doemail.com',
-//   forgotpassword: '0',
-//   changepassword: '0',
-// };
-// users[2] = {
-//   firstname: 'Druid',
-//   lastname: 'Wensleydale',
-//   authkey: 'bjNffOEArO',
-//   username: 'druid',
-//   password: 'druid',
-//   email: 'short@longmail.com',
-//   forgotpassword: '1',
-//   changepassword: '0',
-// };
-// users[3] = {
-//   firstname: 'Shequondolisa',
-//   lastname: 'Bivouac',
-//   authkey: 'fgzRHVuemP',
-//   username: 'shequondolisa',
-//   password: 'shequondolisa',
-//   email: 'fashionista@fashionmail.com',
-//   forgotpassword: '0',
-//   changepassword: '1',
-// };
 
 class Preset {
   presetBuilder() {
@@ -126,7 +86,6 @@ class Preset {
           createPersons +
           createProjects +
           createGroups +
-          createSessions +
           createHours +
           createViews,
         (err, res) => {
@@ -144,13 +103,9 @@ class Preset {
         console.log('preset created');
         console.timeEnd('dbCreate');
         self.fillTemplate();
-        return;
       })
-      .catch(function (reject) {
-        console.log(
-          'We have: ' + reject + ' warnings. Probably already built. stopping.'
-        );
-        return;
+      .catch(function (err) {
+        throw new Error(err);
       });
   }
   fillTemplate() {
@@ -176,17 +131,12 @@ class Preset {
         console.log('filled template values');
         console.timeEnd('fillTemplate');
         self.createUsers();
-        return;
       })
-      .catch(function (reject) {
-        console.log(
-          'We have: ' + reject + ' warnings. Probably already built. stopping.'
-        );
-        return;
+      .catch(function (err) {
+        throw new Error(err);
       });
   }
   createUsers() {
-    var self = this;
     console.time('createUsers');
     var usersKeys = Object.keys(users);
     for (var i = 0; i < usersKeys.length; i++) {
@@ -200,7 +150,6 @@ class Preset {
     }
     console.timeEnd('createUsers');
     process.env.run_builder = false;
-    //self.writeConfig();
   }
   writeConfig() {
     fs.readFile('../config.js', 'utf8', function (err, data) {
@@ -211,8 +160,8 @@ class Preset {
         /config.runBuilder = true/g,
         'config.runBuilder = false'
       );
-      fs.writeFile('./config.js', result, 'utf8', function (err) {
-        if (err) return console.log(err);
+      fs.writeFile('./config.js', result, 'utf8', function (error) {
+        if (error) return console.log(err);
       });
       return console.log('Changed config.runBuilder to false');
     });

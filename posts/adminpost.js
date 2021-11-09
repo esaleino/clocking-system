@@ -56,11 +56,11 @@ app.post('/admin/userRemove', function (req, res) {
   });
 });
 
-function adminPostQuery(loggedInUser, userToValidate, query) {
+function adminPostQuery(loggedInUser, userToQuery, query) {
   return new Promise((resolve, reject) => {
     if (loggedInUser == 'admin') {
       connection
-        .query(query, [userToValidate])
+        .query(query, [userToQuery])
         .then((res) => {
           resolve(res);
         })

@@ -13,33 +13,28 @@ if (result.error) {
   throw result.error;
 }
 console.log(result.parsed);
-//require("./telegrambot/telegrambot");
-/* var sessionStore = require('./sessionstore'); */
 var connection = require('./connectPostgres');
 const pgSession = require('connect-pg-simple')(session);
 
 const Preset = require('./tools/databasePresetBuilder');
 var databasePreset = new Preset();
 
-// DEFINE ROUTERS
+/* ---------------------------- // DEFINE ROUTERS --------------------------- */
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
-var registerRouter = require('./routes/register');
+var registerRouter = require('./routes/register').app;
 var adminRouter = require('./routes/admin');
 var appRouter = require('./routes/app');
 var logoutRouter = require('./routes/logout');
 
-// DEFINE TESTS
-// var testPost = require('./posts/testpost');
-
-// DEFINE POSTS
+/* ----------------------------- // DEFINE POSTS ---------------------------- */
 var registerPost = require('./posts/registerpost');
 var authPost = require('./posts/authpost').app;
 var userPost = require('./posts/userpost');
 var clockingPost = require('./posts/clocking');
 var adminPost = require('./posts/adminpost');
 
-// DEFINE GET
+/* ------------------------------ // DEFINE GET ----------------------------- */
 var adminGet = require('./get/adminget');
 
 var cors = require('cors');
@@ -82,7 +77,7 @@ app.use(
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Use routers
+/* ----------------------------- // Use routers ----------------------------- */
 app.use('/', indexRouter);
 app.use('/index', indexRouter);
 app.use('/login', loginRouter);
@@ -91,16 +86,16 @@ app.use('/admin', adminRouter);
 app.use('/app', appRouter);
 app.use('/logout', logoutRouter);
 
-// Use POSTS
+/* ------------------------------ // Use POSTS ------------------------------ */
 app.use('', adminPost);
 app.use('', registerPost);
 app.use('', authPost);
 app.use('', userPost);
 app.use('', clockingPost);
 
-// Use GET
+/* ------------------------------- // Use GET ------------------------------- */
 app.use('', adminGet);
-// app.use('', testPost);
+
 console.log(process.env.run_builder);
 if (process.env.run_builder == 'true') {
   databasePreset.presetBuilder();

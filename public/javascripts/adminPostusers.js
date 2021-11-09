@@ -9,7 +9,9 @@ window.userRemove = function (element) {
   var url = '/userRemove';
   if (
     confirm(
-      'Are you sure you want to remove ' + username + '? \nThis is irrversible.'
+      'Are you sure you want to remove ' +
+        username +
+        '? \nThis is irreversible.'
     )
   ) {
     console.log('true');
