@@ -45,10 +45,7 @@ window.admintableConstruct = async (getResults) => {
   var tr = '<tr>';
   for (var i = 0; i < dataKeys.length; i++) {
     console.log(i);
-    tr +=
-      '<th class="th-sm">' +
-      dataKeys[i].toUpperCase() +
-      '</th>';
+    tr += '<th class="th-sm">' + dataKeys[i].toUpperCase() + '</th>';
   }
   if (currentSection == 'userverification') {
     tr += '<th class="th-sm">VALIDATE</th>';
@@ -59,15 +56,20 @@ window.admintableConstruct = async (getResults) => {
   for (var i = 0; i < data.length; i++) {
     tr = '<tr>';
     var dataLoop = data[i];
-    for (var x = 0; x < dataKeys.length; x++) {
-      if (dataLoop[dataKeys[x]] == 1) {
-        tr += '<td >true</td>';
-      } else if (dataLoop[dataKeys[x]] == 0) {
-        tr += '<td >false</td>';
-      } else {
-        tr += '<td >' + dataLoop[dataKeys[x]] + '</td>';
+    dataKeys.forEach((dataKey) => {
+      switch (dataLoop[dataKey]) {
+        case 1:
+          tr += '<td >true</td>';
+          break;
+        case 0:
+          tr += '<td >false</td>';
+          break;
+        default:
+          tr += '<td >' + dataLoop[dataKey] + '</td>';
+          break;
       }
-    }
+    });
+
     if (currentSection == 'userverification') {
       var thisVerifyId = 'verify' + i;
       var thisVerifyName = 'vr' + dataLoop.username;

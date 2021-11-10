@@ -22,7 +22,7 @@ var databasePreset = new Preset();
 /* ---------------------------- // DEFINE ROUTERS --------------------------- */
 var indexRouter = require('./routes/index');
 var loginRouter = require('./routes/login');
-var registerRouter = require('./routes/register').app;
+var registerRouter = require('./routes/register');
 var adminRouter = require('./routes/admin');
 var appRouter = require('./routes/app');
 var logoutRouter = require('./routes/logout');

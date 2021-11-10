@@ -34,14 +34,13 @@ function ajaxPost(url, data) {
     url: window.location + url,
     data: formData,
     dataType: 'json',
-    success: function (data) {
+    success: function (response) {
       if (url == '/userVerify') {
-        alert('user: ' + data.username + ' successfully verified');
+        alert(response.text);
         document.getElementById('getUnverified').click();
       } else if (url == '/userRemove') {
-        alert(
-          'user: ' + data.username + ' successfully removed from the database'
-        );
+        console.log(response);
+        alert(response.text);
         document.getElementById('getUnverified').click();
       }
     },

@@ -1,9 +1,26 @@
 var express = require('express');
 var app = express();
-require('../jest.config');
 
 var connection = require('../connectPostgres');
 const adminQuery = require('../serverjs/queryvars');
+
+const resultCode = {
+  success: 1,
+  fail: 0,
+  error: 2,
+};
+
+const errorMessage = 'An error has occured, logging out';
+
+const removeMessage = {
+  success: ' successfully removed!',
+  fail: ' does not exist!',
+};
+
+const verifyMessage = {
+  success: ' successfully validated!',
+  fail: ' has already been validated!',
+};
 
 app.post('/admin/userVerify', function (req, res) {
   adminPostQuery(
@@ -12,18 +29,13 @@ app.post('/admin/userVerify', function (req, res) {
     adminQuery.userVerify
   ).then((result) => {
     switch (result) {
-      // Success case
-      case 1:
-        console.log(req.body);
-        res.send(req.body);
+      case resultCode.success:
+        res.send({ text: req.body.username + verifyMessage.success });
         break;
-      // User already validated
-      case 0:
-        var username = req.body.username;
-        res.send({ username: `${username} already verified` });
+      case resultCode.fail:
+        res.send({ text: req.body.username + verifyMessage.fail });
         break;
-      // Not admin
-      case 2:
+      default:
         req.session.destroy();
         res.redirect('../login');
         break;
@@ -36,19 +48,15 @@ app.post('/admin/userRemove', function (req, res) {
     req.body.username,
     adminQuery.userRemove
   ).then((result) => {
+    console.log(result);
     switch (result) {
-      // Success case
-      case 1:
-        console.log(req.body);
-        res.send(req.body);
+      case resultCode.success:
+        res.send({ text: req.body.username + removeMessage.success });
         break;
-      // User doesn't exist
-      case 0:
-        var username = req.body.username;
-        res.send({ username: `${username} already deleted` });
+      case resultCode.fail:
+        res.send({ text: req.body.username + removeMessage.fail });
         break;
-      // Not admin
-      case 2:
+      default:
         req.session.destroy();
         res.redirect('../login');
         break;
@@ -62,29 +70,21 @@ function adminPostQuery(loggedInUser, userToQuery, query) {
       connection
         .query(query, [userToQuery])
         .then((res) => {
-          resolve(res);
+          resolve(res.rowCount);
         })
         .catch((err) => {
           reject(err);
         });
     } else {
-      resolve('not admin');
+      resolve('error');
     }
   })
     .then((res) => {
-      switch (res.rowCount) {
-        // QUERY success returning 1
-        case 1:
-          return 1;
-        // QUERY fail user not found returning 0
-        case 0:
-          return 0;
-        // Not admin user
-        default:
-          return 2;
-      }
+      console.error(res);
+      return res;
     })
     .catch((err) => {
+      console.error(err);
       throw new Error(err);
     });
 }
