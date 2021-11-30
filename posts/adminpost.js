@@ -80,11 +80,9 @@ function adminPostQuery(loggedInUser, userToQuery, query) {
     }
   })
     .then((res) => {
-      console.error(res);
       return res;
     })
     .catch((err) => {
-      console.error(err);
       throw new Error(err);
     });
 }

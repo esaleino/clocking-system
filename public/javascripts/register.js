@@ -1,10 +1,10 @@
 window.formCheck = function () {
-  console.log("heloo");
+  console.log('heloo');
 
-  var username = document.getElementById("username").value;
-  var password = document.getElementById("password").value;
-  var passwordCheck = document.getElementById("passwordCheck").value;
-  var email = document.getElementById("email").value;
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
+  var passwordCheck = document.getElementById('passwordCheck').value;
+  var email = document.getElementById('email').value;
   console.log(username);
   console.log(username.length);
   if (username != null && username.length >= 3) {
@@ -16,5 +16,4 @@ window.formCheck = function () {
       }
     }
   }
-  return false;
 };

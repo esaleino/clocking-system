@@ -24,14 +24,14 @@ app.post('/registerpost', function (req, res) {
       connection.query(
         'SELECT * FROM accounts WHERE username = $1',
         [username],
-        function (error, results, fields) {
+        function (error, results) {
           // IF statement for result data
 
           if (results == undefined) {
             // An error has occured
             console.log(error);
             reject(error);
-          } else if (results.length == 0) {
+          } else if (results.rowCount == 0) {
             // IF no results returned => resolve
             resolve('OK!');
           } else {
