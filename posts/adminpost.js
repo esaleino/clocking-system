@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 
 var connection = require('../connectPostgres');
-const adminQuery = require('../serverjs/queryvars');
+const adminQuery = require('../serverjs/queryvars').adminQuery;
 
 const resultCode = {
   success: 1,

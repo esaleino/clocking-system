@@ -1,6 +1,6 @@
 const connection = require('../connectPostgres');
 const admin = require('../posts/adminpost');
-const adminQuery = require('../serverjs/queryvars');
+const adminQuery = require('../serverjs/queryvars').adminQuery;
 var userToValidate = 'foobar';
 
 test('admin validate real user with admin login', () => {

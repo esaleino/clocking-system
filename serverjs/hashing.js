@@ -3,14 +3,6 @@ const bcrypt = require('bcrypt');
 const connection = require('../connectPostgres');
 const saltRounds = 10;
 
-/* hashPassword()
-  .then((res) => {
-    console.log('hello' + res);
-  })
-  .catch((err) => {
-    console.error(err);
-  }); */
-
 function hashPassword(raw) {
   return new Promise((resolve, reject) => {
     bcrypt.genSalt(saltRounds, (error, salt) => {
