@@ -7,12 +7,12 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var app = express();
 const logErrors = require('express-log-errors');
-const dotenv = require('dotenv');
+/* const dotenv = require('dotenv');
 const result = dotenv.config();
 if (result.error) {
   throw result.error;
 }
-console.log(result.parsed);
+console.log(result.parsed); */
 var connection = require('./connectPostgres');
 const pgSession = require('connect-pg-simple')(session);
 

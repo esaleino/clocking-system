@@ -1,8 +1,8 @@
-const dotenv = require('dotenv');
+/* const dotenv = require('dotenv');
 const result = dotenv.config();
 if (result.error) {
   throw result.error;
-}
+} */
 var connection = require('../connectPostgres');
 const { serverdbQuery } = require('./queryvars');
 var makeAccount = `INSERT INTO accounts 
@@ -83,41 +83,6 @@ class Users {
       }
     );
   }
-}
-
-hello();
-function hello() {
-  checkUser('aders', 'adsdsda').then((res) => {
-    console.log(res);
-  });
-}
-
-function checkUser(username, email) {
-  return new Promise((resolve, reject) => {
-    connection
-      .query('select username from accounts where username = $1', [username])
-      .then((res) => {
-        if (res.rowCount == 1) {
-          resolve(checkUserResponse.userExists);
-        } else {
-          connection
-            .query('select email from accounts where email = $1', [email])
-            .then((res) => {
-              if (res.rowCount == 1) {
-                resolve(checkUserResponse.emailExists);
-              } else {
-                resolve(checkUserResponse.success);
-              }
-            });
-        }
-      });
-  })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      throw err;
-    });
 }
 
 module.exports = Users;
