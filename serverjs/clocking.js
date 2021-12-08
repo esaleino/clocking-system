@@ -1,5 +1,6 @@
 const connection = require('../connectPostgres');
 const clockingQuery = require('./queryvars').clockingQuery;
+console.log(clockingQuery);
 
 const clockState = {
   true: 1,
@@ -27,7 +28,7 @@ class Clocking {
   }
   offLunch(username) {
     connection.query(
-      clockingQuery.Lunch,
+      clockingQuery.lunch,
       [clockState.false, username],
       (res) => {
         console.log(username + ' returned from lunch!');

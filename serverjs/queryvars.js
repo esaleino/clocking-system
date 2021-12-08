@@ -1,5 +1,3 @@
-const Clocking = require('./clocking');
-
 const adminQuery = {};
 const serverdbQuery = {};
 const clockingQuery = {};
@@ -39,5 +37,6 @@ serverdbQuery.makeAccount = `INSERT INTO accounts
 serverdbQuery.checkUser = `(SELECT username FROM accounts WHERE username = $1) UNION ALL (SELECT email FROM accounts WHERE email = $2)`;
 
 clockingQuery.lunch = `UPDATE persons SET onlunch = $1 WHERE username = $2`;
-clockingQuery.clock = `UPDATE persons SET clockin = $1 WHERE username = $2`;
+clockingQuery.clock = `UPDATE persons SET clockedin = $1 WHERE username = $2`;
+
 module.exports = { adminQuery, serverdbQuery, clockingQuery };
