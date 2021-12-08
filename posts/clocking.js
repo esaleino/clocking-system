@@ -6,19 +6,24 @@ const CheckStatus = require('../serverjs/checkstatus.js');
 var checkStatus = new CheckStatus();
 var connection = require('../connectPostgres');
 
+var clockinState = {
+  working: 'clockin',
+  onLunch: 'lunch',
+  unavailable: 'clockout',
+};
+
 app.post('/clocking/:id', async function (req, res) {
   var passingVar = req.params.id;
   console.log('hello' + req.params.id);
-  let check = await checkStatus.checkStatus(
-    req.session.username
-  );
+  let check = await checkStatus.checkStatus(req.session.username);
   let populatevars = await checkStatus.populate(check);
+  console.log(`this is important information: ${check}`);
   console.log(check);
   console.log(populatevars);
   var clockIn = populatevars.clockedin;
   var onLunch = populatevars.onlunch;
   switch (passingVar) {
-    case 'clockin':
+    case clockinState.working:
       if (check.clockedin == 0) {
         console.log('not clocked in, clocking in!...');
         clocking.clockIn(req.session.username);
@@ -28,7 +33,7 @@ app.post('/clocking/:id', async function (req, res) {
         console.log('Already clocked in, ignoring.');
       }
       break;
-    case 'lunch':
+    case clockinState.onLunch:
       if (check.onlunch == 0) {
         clocking.lunch(req.session.username);
         onLunch = 'Went to lunch';
@@ -36,7 +41,7 @@ app.post('/clocking/:id', async function (req, res) {
         onLunch = 'Already on lunch';
       }
       break;
-    case 'clockout':
+    case clockinState.unavailable:
       if (check.clockedin == 0) {
         clockIn = 'Already clocked out.';
       } else {
@@ -55,8 +60,7 @@ app.post('/clocking/:id', async function (req, res) {
       // console.log(response);
       console.log('connected as id ' + connection.threadId);
       res.render('app', {
-        title:
-          'Welcome back, ' + req.session.username + '!',
+        title: 'Welcome back, ' + req.session.username + '!',
         loggedinUser: req.session.username,
         tableData: response,
         clockin: clockIn,

@@ -1,32 +1,45 @@
 const connection = require('../connectPostgres');
+const clockingQuery = require('./queryvars').clockingQuery;
+
+const clockState = {
+  true: 1,
+  false: 0,
+};
 
 class Clocking {
   clockIn(username) {
     connection.query(
-      'UPDATE persons SET clockedin = true WHERE username = $1',
-      [username],
-      function (error, result) {
-        console.log(username + ' Successfully clocked in!');
+      clockingQuery.clock,
+      [clockState.true, username],
+      (res) => {
+        console.log(username + ' has clocked in!');
       }
     );
   }
   lunch(username) {
     connection.query(
-      'UPDATE persons SET onlunch = true WHERE username = $1',
-      [username],
-      function (error, result) {
-        console.log(username + ' Went to lunch!');
+      clockingQuery.lunch,
+      [clockState.true, username],
+      (res) => {
+        console.log(username + ' went to lunch!');
+      }
+    );
+  }
+  offLunch(username) {
+    connection.query(
+      clockingQuery.Lunch,
+      [clockState.false, username],
+      (res) => {
+        console.log(username + ' returned from lunch!');
       }
     );
   }
   clockOut(username) {
     connection.query(
-      'UPDATE persons SET clockedin = false WHERE username = $1',
-      [username],
+      clockingQuery.clock,
+      [clockState.false, username],
       function (error, result) {
-        console.log(
-          username + ' Successfully clocked out!'
-        );
+        console.log(username + ' has clocked out!');
       }
     );
   }

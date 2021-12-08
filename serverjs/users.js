@@ -1,8 +1,3 @@
-/* const dotenv = require('dotenv');
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-} */
 var connection = require('../connectPostgres');
 const { serverdbQuery } = require('./queryvars');
 var makeAccount = `INSERT INTO accounts 

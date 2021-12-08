@@ -37,6 +37,7 @@ app.post('/registerpost', function (req, res) {
               switch (regRes) {
                 case response.success:
                   res.redirect('../login');
+                  
                   break;
                 case response.personfailure:
                   break;
