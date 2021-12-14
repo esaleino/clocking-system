@@ -39,4 +39,12 @@ serverdbQuery.checkUser = `(SELECT username FROM accounts WHERE username = $1) U
 clockingQuery.lunch = `UPDATE persons SET onlunch = $1 WHERE username = $2`;
 clockingQuery.clock = `UPDATE persons SET clockedin = $1 WHERE username = $2`;
 
-module.exports = { adminQuery, serverdbQuery, clockingQuery };
+clockingQuery.getUserClockId = `SELECT id FROM currentstatus WHERE username = $1`;
+clockingQuery.logClockin = `INSERT INTO currentstatus (username, project_name, time_start) VALUES ($1, $2, $3) RETURNING id;`;
+clockingQuery.logClockout = `UPDATE currentstatus SET time_end = $2 WHERE id = $1 RETURNING id`;
+
+module.exports = {
+  adminQuery,
+  serverdbQuery,
+  clockingQuery,
+};

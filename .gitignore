@@ -108,3 +108,4 @@ dist
 test.js
 .prettierignore
 *.old.js
+testing.js
