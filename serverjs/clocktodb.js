@@ -99,8 +99,7 @@ function clockOut(id, body) {
 
 function getTime(timeEnd, timeStart) {
   let difference = Math.floor((timeEnd - timeStart) / 1000);
-  console.log(new Date(difference * 1000).toISOString().substr(11, 8));
-  return difference;
+  return new Date(difference * 1000).toISOString().substr(11, 8);
 }
 
 module.exports = clocktoDb;

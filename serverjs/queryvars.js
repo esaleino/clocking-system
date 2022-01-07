@@ -43,6 +43,9 @@ clockingQuery.getUserClockId = `SELECT id FROM currentstatus WHERE username = $1
 clockingQuery.logClockin = `INSERT INTO currentstatus (username, project_name, time_start) VALUES ($1, $2, $3) RETURNING id;`;
 clockingQuery.logClockout = `UPDATE currentstatus SET time_end = $2 WHERE id = $1 RETURNING time_start, time_end, id`;
 
+clockingQuery.transferToHistory = `INSERT INTO statushistory (username, project, date, hours) VALUES ($1, $2, $3, $4)`;
+clockingQuery.deleteFromCurrent = `DELETE FROM currentstatus WHERE username = $1`;
+
 module.exports = {
   adminQuery,
   serverdbQuery,
