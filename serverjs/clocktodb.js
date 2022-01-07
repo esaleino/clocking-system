@@ -1,3 +1,9 @@
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+  throw result.error;
+}
+
 const connection = require('../connectPostgres');
 const clockingQuery = require('./queryvars').clockingQuery;
 
@@ -10,39 +16,41 @@ var code = {
   fail: 0,
 };
 
-main();
-
-function main(clockStatus, body) {
-  switch (clockStatus) {
-    case clocking.in:
-      clockIn(body)
-        .then((res) => {
-          return code.success;
-        })
-        .catch((err) => {
-          throw Error(err);
-        });
-      break;
-    case clocking.out:
-      clockOutInfo(body)
-        .then((res) => {
-          return code.success;
-        })
-        .catch((err) => {
-          throw Error(err);
-        });
-      break;
-    default:
-      break;
-  }
+function clocktoDb(clockStatus, body) {
+  return new Promise((resolve, reject) => {
+    switch (clockStatus) {
+      case clocking.in:
+        clockIn(body)
+          .then((res) => {
+            console.log(res);
+            resolve(res);
+          })
+          .catch((err) => {
+            throw Error(err);
+          });
+        break;
+      case clocking.out:
+        clockOutInfo(body)
+          .then((res) => {
+            clockOut(res, body).then((res) => {
+              resolve(res);
+            });
+          })
+          .catch((err) => {
+            throw Error(err);
+          });
+        break;
+      default:
+        break;
+    }
+  });
 }
 
-function clockIn() {
-  var startTime = new Date();
+function clockIn(body) {
   return new Promise((resolve, reject) => {
     connection.query(
       clockingQuery.logClockin,
-      [body.username, body.project, startTime],
+      [body.username, body.project, body.time_start],
       (err, res) => {
         if (err) {
           reject(err);
@@ -59,23 +67,33 @@ function clockOutInfo(body) {
     connection.query(
       clockingQuery.getUserClockId,
       [body.username],
-      (err, res) => {}
+      (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.rows[0].id);
+        }
+      }
     );
   });
 }
 
-function clockOut(id) {
-  var endTime = new Date();
+function clockOut(id, body) {
   return new Promise((resolve, reject) => {
-    connection.query(testupd, [id, endTime], (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res.rows[0].id);
+    connection.query(
+      clockingQuery.logClockout,
+      [id, body.time_end],
+      (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res.rows[0]);
+        }
       }
-    });
+    );
   }).then((res) => {
-    getTime();
+    console.log(res);
+    return getTime(res.time_end, res.time_start);
   });
 }
 
@@ -84,3 +102,5 @@ function getTime(timeEnd, timeStart) {
   console.log(new Date(difference * 1000).toISOString().substr(11, 8));
   return difference;
 }
+
+module.exports = clocktoDb;

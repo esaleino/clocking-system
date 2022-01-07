@@ -12,14 +12,13 @@ router.use(
     next();
   },
   async function (req, res, next) {
+    console.log(req.session);
     if (
       req.session.loggedin == true &&
       req.session.username == res.locals.id &&
       req.session.username != 'admin'
     ) {
-      let check = await checkStatus.checkStatus(
-        req.session.username
-      );
+      let check = await checkStatus.checkStatus(req.session.username);
       console.log(check);
       var variables = await checkStatus.populate(check);
       console.log(variables);
@@ -31,16 +30,13 @@ router.use(
           console.log(results.rows);
           var response = results.rows;
           // console.log(response);
-          console.log(
-            'connected as id ' + connection.threadId
-          );
+          console.log('connected as id ' + connection.threadId);
           res.render('app', {
-            title:
-              'Welcome back, ' + req.session.username + '!',
+            title: 'Welcome back, ' + req.session.username + '!',
             loggedinUser: req.session.username,
             tableData: response,
-            clockin: variables.clockedin,
-            onlunch: variables.onlunch,
+            clockin: req.session.clock,
+            onlunch: req.session.lunch,
             currentPage: 'App Panel',
           });
         }

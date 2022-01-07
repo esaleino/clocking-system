@@ -46,10 +46,7 @@ class ViewsCounter {
     connection.query(
       `SELECT COUNT(*) AS count FROM page_views`,
       function (error, results) {
-        console.log(results);
-        console.log(
-          'Total visitors: ' + results.rows[0].count
-        );
+        console.log('Total visitors: ' + results.rows[0].count);
       }
     );
   }
