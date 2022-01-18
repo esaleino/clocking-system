@@ -23,7 +23,7 @@ router.use(
       var variables = await checkStatus.populate(check);
       console.log(variables);
       connection.query(
-        'SELECT * FROM projects WHERE username = $1',
+        'SELECT * FROM statushistory WHERE username = $1',
         [req.session.username],
         function (err, results, fields) {
           // console.log(results);
@@ -32,6 +32,7 @@ router.use(
           // console.log(response);
           console.log('connected as id ' + connection.threadId);
           res.render('app', {
+            date: req.session.time_start,
             title: 'Welcome back, ' + req.session.username + '!',
             loggedinUser: req.session.username,
             tableData: response,

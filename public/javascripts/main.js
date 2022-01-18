@@ -1,5 +1,5 @@
-import "./tableConstructor.js";
-import "./navbar.js";
+import './tableConstructor.js';
+import './navbar.js';
 
 window.pageLoadApp = async () => {
   navbarChange();

@@ -10,7 +10,7 @@ window.tableConstruct = async () => {
     tr += '<th>' + data[i].id + '</th>';
     tr += '<td>' + data[i].project + '</td>';
     tr += '<td>' + data[i].hours + '</td>';
-    tr += '<td>' + data[i].info + '</td>';
+    tr += '<td>' + data[i].date + '</td>';
     tr += '</tr>';
     tbody.innerHTML += tr;
   }

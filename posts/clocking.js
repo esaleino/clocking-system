@@ -6,6 +6,7 @@ const CheckStatus = require('../serverjs/checkstatus.js');
 var checkStatus = new CheckStatus();
 var connection = require('../connectPostgres');
 var clocktoDb = require('../serverjs/clocktodb');
+var clockingQuery = require('../serverjs/queryvars').clockingQuery;
 
 var clockinState = {
   working: 'clockin',
@@ -37,9 +38,8 @@ app.post('/clocking/:id', async function (req, res) {
         req.session.time_start = new Date();
         req.session.clock = true;
         clocktoDb(sendState.true, req.session).then((res) => {
-          req.session.id = res;
+          clockIn = 'Successfully clocked in!';
         });
-        clockIn = 'Successfully clocked in!';
       } else {
         clockIn = 'Already clocked in!!';
         console.log('Already clocked in, ignoring.');
@@ -63,26 +63,37 @@ app.post('/clocking/:id', async function (req, res) {
         req.session.clock = false;
         req.session.time_end = new Date();
         clocktoDb(sendState.false, req.session).then((res) => {
-          console.log('we are here now' + res);
+          req.session.time_diff = res;
+          transferHistory(req.session)
+            .then((res) => {
+              req.session.lunch = 0;
+              req.session.time_start = '';
+              req.session.time_end = '';
+              req.session.time_diff = '';
+              clockIn = 'Successfully clocked out';
+            })
+            .catch((err) => {
+              throw new Error(err);
+            });
         });
-        clockIn = 'Successfully clocked out';
       }
       break;
   }
-  console.log('please dont...');
   connection.query(
-    'SELECT * FROM projects WHERE username = $1',
+    'SELECT * FROM statushistory WHERE username = $1',
     [req.session.username],
     function (err, results, fields) {
+      console.log(req.session);
       // console.log(results);
       var response = results.rows;
       // console.log(response);
       console.log('connected as id ' + connection.threadId);
       res.render('app', {
+        date: req.session.time_start,
         title: 'Welcome back, ' + req.session.username + '!',
         loggedinUser: req.session.username,
         tableData: response,
-        clockin: clockIn,
+        clockin: req.session.clock,
         onlunch: onLunch,
         currentPage: 'App Panel',
       });
@@ -90,4 +101,37 @@ app.post('/clocking/:id', async function (req, res) {
   );
 });
 
+function transfer(body) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      clockingQuery.transferToHistory,
+      [body.username, body.project, body.time_start, body.time_diff],
+      (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      }
+    );
+  });
+}
+function transferHistory(body) {
+  return new Promise((resolve, reject) => {
+    transfer(body).then(() => {
+      console.log(body);
+      connection.query(
+        clockingQuery.deleteFromCurrent,
+        [body.username],
+        (err, res) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  });
+}
 module.exports = app;

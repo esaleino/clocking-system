@@ -1,9 +1,3 @@
-const dotenv = require('dotenv');
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-}
-
 const connection = require('../connectPostgres');
 const clockingQuery = require('./queryvars').clockingQuery;
 

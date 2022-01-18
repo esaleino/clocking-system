@@ -25,13 +25,13 @@ var createPersons = `CREATE TABLE IF NOT EXISTS persons
                     clockedin smallint NOT NULL DEFAULT 0,
                     onlunch smallint NOT NULL DEFAULT 0
                     );`;
-var createProjects = `CREATE TABLE IF NOT EXISTS projects (
+/* var createProjects = `CREATE TABLE IF NOT EXISTS projects (
                     id SERIAL PRIMARY KEY,
                     username varchar(30) NOT NULL,
                     hours smallint DEFAULT NULL,
                     project varchar(45) DEFAULT NULL,
                     info varchar(30) DEFAULT NULL
-                    );`;
+                    );`; */
 var createGroups = `CREATE TABLE IF NOT EXISTS workgroups 
                     (groupId SERIAL PRIMARY KEY,
                     groupName varchar(255) NOT NULL,
@@ -56,6 +56,25 @@ var createViews = `CREATE TABLE IF NOT EXISTS page_views
                   visitorip varchar(255) NOT NULL,
                   CONSTRAINT unique_visitorip UNIQUE (visitorip)
                   );`;
+var createHistory = `CREATE TABLE IF NOT EXISTS statushistory
+(
+    id integer NOT NULL DEFAULT nextval('statushistory_id_seq'::regclass),
+    username character varying(50) NOT NULL,
+    project character varying(255) NOT NULL,
+    date timestamp with time zone NOT NULL,
+    hours character varying(10) NOT NULL,
+    CONSTRAINT statushistory_pkey PRIMARY KEY (id)
+)`;
+var createStatus = `CREATE TABLE IF NOT EXISTS public.currentstatus
+(
+    id integer NOT NULL DEFAULT nextval('userstatus_id_seq'::regclass),
+    username character varying(50) NOT NULL,
+    project_name character varying(255) NOT NULL,
+    time_start timestamp with time zone NOT NULL,
+    time_end timestamp with time zone,
+    CONSTRAINT userstatus_pkey PRIMARY KEY (id)
+)
+`;
 var insertGroups = {
   Admin: `INSERT INTO workgroups 
   (groupName, groupAuthKey, groupProject) 
@@ -87,7 +106,9 @@ class Preset {
           createProjects +
           createGroups +
           createHours +
-          createViews,
+          createViews +
+          createHistory +
+          createStatus,
         (err, res) => {
           console.log(err, res);
           if (err) {
